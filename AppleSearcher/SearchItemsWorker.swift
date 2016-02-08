@@ -20,19 +20,20 @@ class SearchItemsWorker
   }
   
   func fetchItems(searchString: String, completionHandler: (items: [Item]) -> Void) {
-    itemsStore.fetchItems { (items) -> Void in
-      do {
-        let items = try items
-      }
-    }
-    
     itemsStore.fetchItems(searchString) { (items) -> Void in
-      completionHandler(items: items)
+      do {
+        let items = try items()
+        completionHandler(items: items)
+      } catch {
+        completionHandler(items: [])
+      }
     }
   }
 }
 
 protocol SearchItemsStoreProtocol {
-  func fetchItems(completionHandler: (items: () throws -> [Item]) -> Void)
+  func fetchItems(searchString: String, completionHandler: (items: () throws -> [Item]) -> Void)
 }
+
+
 

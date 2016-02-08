@@ -8,11 +8,11 @@
 
 import Foundation
 
-//class ItemsMemoryStore: SearchItemsStoreProtocol {
-//  
-//  var items = [Item]()
-//  
-//  func fetchItems(completionHandler: (items: () throws -> [Item]) -> Void) {
-//    
-//  }
-//}
+class ItemsMemoryStore: SearchItemsStoreProtocol {
+  
+  var items = [Item]()
+  
+  func fetchItems(searchString: String, completionHandler: (items: () throws -> [Item]) -> Void) {
+    
+  }
+}

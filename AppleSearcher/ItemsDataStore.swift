@@ -9,7 +9,7 @@
 import Foundation
 
 class ItemsDataStore: SearchItemsStoreProtocol {
-  func fetchItems(searchString: String, completionHandler: (items: [Item]) -> Void) {
+  func fetchItems(searchString: String, completionHandler: (items: () throws -> [Item]) -> Void) {
     
   }
 }

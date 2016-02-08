@@ -44,11 +44,11 @@ class SearchItemsWorkerTests: XCTestCase
     
     var fetchItemsCalled = false
     
-    override func fetchItems(searchString: String, completionHandler: (items: [Item]) -> Void) {
+    override func fetchItems(searchString: String, completionHandler: (items: () throws -> [Item]) -> Void) {
       fetchItemsCalled = true
       let oneSecond = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 1 * Int64(NSEC_PER_SEC))
       dispatch_after(oneSecond, dispatch_get_main_queue()) { () -> Void in
-        completionHandler(items: [Item(), Item()])
+        completionHandler{ return [Item(), Item()] }
       }
     }
   }

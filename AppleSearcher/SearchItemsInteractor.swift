@@ -29,9 +29,6 @@ class SearchItemsInteractor: SearchItemsInteractorInput
   // MARK: Business logic
   
   func fetchItems(request: SearchItems_FetchItems_Request) {
-    worker.fetchItems { (items) -> Void in
-      <#code#>
-    }
     worker.fetchItems(request.searchString) { (items) -> Void in
       let response = SearchItems_FetchItems_Response(items: items)
       self.output.presentFetchedItems(response)
