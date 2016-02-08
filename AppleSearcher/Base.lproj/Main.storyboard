@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iz3-f3-Xqz">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="4Y5-bk-AzA">
+            <objects>
+                <navigationController id="iz3-f3-Xqz" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="VmK-Xd-Jlw">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="LNn-zF-iJk" kind="relationship" relationship="rootViewController" id="mTE-Gs-z1q"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LU8-YT-Oni" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1554.5" y="155.5"/>
+        </scene>
+        <!--Music Finder-->
+        <scene sceneID="sB8-ak-0Dj">
+            <objects>
+                <viewController storyboardIdentifier="SearchItemsViewController" id="LNn-zF-iJk" customClass="SearchItemsViewController" customModule="AppleSearcher" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AsR-cY-qGq"/>
+                        <viewControllerLayoutGuide type="bottom" id="nMC-SW-MCi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DSY-NS-lRq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="k9C-3m-gsD">
+                                <rect key="frame" x="-4" y="64" width="383" height="44"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="EYs-cd-JGj">
+                                <rect key="frame" x="-4" y="108" width="383" height="559"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zB6-HP-Qxc">
+                                    <size key="itemSize" width="139" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="oTK-kg-lTb">
+                                        <rect key="frame" x="0.0" y="0.0" width="139" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="139" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <color key="backgroundColor" red="0.1647058874" green="0.99215692280000001" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="LNn-zF-iJk" id="EdL-Dm-78u"/>
+                                    <outlet property="delegate" destination="LNn-zF-iJk" id="a6o-JU-yBN"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="EYs-cd-JGj" secondAttribute="trailing" constant="-20" id="01o-NQ-xfO"/>
+                            <constraint firstItem="k9C-3m-gsD" firstAttribute="top" secondItem="AsR-cY-qGq" secondAttribute="bottom" id="7sE-i8-aqO"/>
+                            <constraint firstItem="EYs-cd-JGj" firstAttribute="leading" secondItem="DSY-NS-lRq" secondAttribute="leadingMargin" constant="-20" id="8bE-Lm-S5y"/>
+                            <constraint firstItem="k9C-3m-gsD" firstAttribute="leading" secondItem="DSY-NS-lRq" secondAttribute="leadingMargin" constant="-20" id="PKY-8D-1jA"/>
+                            <constraint firstItem="EYs-cd-JGj" firstAttribute="top" secondItem="k9C-3m-gsD" secondAttribute="bottom" id="cPe-7x-H8V"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="k9C-3m-gsD" secondAttribute="trailing" constant="-20" id="jae-as-ZSb"/>
+                            <constraint firstItem="nMC-SW-MCi" firstAttribute="top" secondItem="EYs-cd-JGj" secondAttribute="bottom" id="xCR-VX-m2n"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Music Finder" id="hu8-Va-p1p"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="collectionView" destination="EYs-cd-JGj" id="YI9-6G-vUv"/>
+                        <outlet property="searchBar" destination="k9C-3m-gsD" id="xeb-pr-N6L"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dL3-YQ-cGG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1091.5" y="155.5"/>
+        </scene>
+    </scenes>
+</document>
