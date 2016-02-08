@@ -13,6 +13,6 @@ class ItemsMemoryStore: SearchItemsStoreProtocol {
   var items = [Item]()
   
   func fetchItems(searchString: String, completionHandler: (items: () throws -> [Item]) -> Void) {
-    
+    completionHandler { return self.items }
   }
 }

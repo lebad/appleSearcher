@@ -55,25 +55,28 @@ class ItemsMemoryStoreTests: XCTestCase {
     sut = nil
   }
     
-//  func testFetchOrdersShouldReturnListOfOrders_OptionalError()
-//  {
-//    // Given
-//    
-//    // When
-//    var returnedOrders = [Item]()
-//    let expectation = expectationWithDescription("Wait for fetchOrders() to return")
-//    sut.fetchOrders { (orders: [Order], error: OrdersStoreError?) -> Void in
-//      returnedOrders = orders
-//      expectation.fulfill()
-//    }
-//    waitForExpectationsWithTimeout(1.0) { (error: NSError?) -> Void in
-//    }
-//    
-//    // Then
-//    XCTAssertEqual(returnedOrders.count, testOrders.count, "fetchOrders() should return a list of orders")
-//    for order in returnedOrders {
-//      XCTAssert(testOrders.contains(order), "Returned orders should match the orders in the data store")
-//    }
-//  }
+  // MARK: - Test CRUD operations - Inner closure
+  
+  func testFetchOrdersShouldReturnListOfOrders_InnerClosure()
+  {
+    // Given
+    
+    // When
+    var returnedItems = [Item]()
+    let expectation = expectationWithDescription("Wait for fetchOrders() to return")
+    sut.fetchItems("AAA") { (items) -> Void in
+      returnedItems = try! items()
+      expectation.fulfill()
+    }
+    waitForExpectationsWithTimeout(1.0) { (error: NSError?) -> Void in
+    }
+    
+    // Then
+    XCTAssertEqual(returnedItems.count, testItems.count, "fetchOrders() should return a list of orders")
+    
+    for item in returnedItems {
+      XCTAssertTrue(testItems.contains(item), "Returned orders should match the orders in the data store")
+    }
+  }
   
 }
