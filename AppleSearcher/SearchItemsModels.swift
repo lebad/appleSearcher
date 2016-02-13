@@ -27,6 +27,9 @@ struct SearchItems_FetchItems_ViewModel
     var name: String?
     var description: String?
     var imagePath: String?
+    var trackID: String?
   }
   var displayedItems: [DisplayedItem]
 }
+
+

@@ -33,8 +33,6 @@ class SearchItemsWorker
 
 protocol SearchItemsStoreProtocol {
   func fetchItems(searchString: String, completionHandler: (items: () throws -> [Item]) -> Void)
-  
-//  func fetchItems(completionHandler: OrdersStoreFetchOrdersCompletionHandler)
 }
 
 typealias ItemsStoreFetchOrdersCompletionHandler = (result: ItemsStoreResult<[Item]>) -> Void

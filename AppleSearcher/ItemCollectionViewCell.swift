@@ -11,6 +11,8 @@ import UIKit
 class ItemCollectionViewCell: UICollectionViewCell {
   var width: CGFloat
   
+  @IBOutlet weak var imageView: UIImageView!
+  
   @IBOutlet private weak var nameLabel: UILabel!
   @IBOutlet private weak var descriptionLabel: UILabel!
   

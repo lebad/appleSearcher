@@ -12,11 +12,13 @@ struct Item: Equatable {
   var name: String?
   var description: String?
   var imageURLString: String?
+  var trackID: String?
   
   init(responseObject: [String: AnyObject]) {
     self.name = getValue(responseObject, string: "artistName")
     self.description = getValue(responseObject, string: "trackCensoredName")
     self.imageURLString = getValue(responseObject, string: "artworkUrl100")
+    self.trackID = getValue(responseObject, string: "trackId")
   }
   
   func getValue(responseObject: [String: AnyObject], string: String) -> String {
@@ -28,9 +30,8 @@ struct Item: Equatable {
   }
 }
 
-func ==(lhs: Item, rhs: Item) -> Bool
-{
+func ==(lhs: Item, rhs: Item) -> Bool {
   return lhs.name == rhs.name
       && lhs.description == rhs.description
-      && lhs.imageURLString == rhs.imageURLString
+      && lhs.trackID == rhs.trackID
 }

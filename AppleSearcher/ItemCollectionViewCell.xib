@@ -14,9 +14,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="373" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="X0D-pA-fsf">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="X0D-pA-fsf">
                         <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                         <constraints>
+                            <constraint firstAttribute="height" constant="100" id="d1u-nT-nRs"/>
                             <constraint firstAttribute="width" constant="100" id="q03-4p-nml"/>
                         </constraints>
                     </imageView>
@@ -35,7 +36,7 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <color key="backgroundColor" red="0.1647058874" green="0.99215692280000001" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
+            <color key="backgroundColor" red="0.92549019610000005" green="0.93725490199999995" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="nOx-Qt-xzf" secondAttribute="trailing" constant="8" id="3JN-wh-B8z"/>
                 <constraint firstItem="4Cp-DB-QOk" firstAttribute="leading" secondItem="X0D-pA-fsf" secondAttribute="trailing" constant="8" id="8tJ-WH-3bF"/>
@@ -51,6 +52,7 @@
             <size key="customSize" width="394" height="90"/>
             <connections>
                 <outlet property="descriptionLabel" destination="4Cp-DB-QOk" id="LSo-yc-Meu"/>
+                <outlet property="imageView" destination="X0D-pA-fsf" id="ghz-eI-yxz"/>
                 <outlet property="nameLabel" destination="nOx-Qt-xzf" id="nkG-lg-diz"/>
             </connections>
             <point key="canvasLocation" x="130.5" y="187"/>

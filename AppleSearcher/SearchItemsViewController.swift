@@ -27,10 +27,14 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   var router: SearchItemsRouter!
   
   var displayedItems: [SearchItems_FetchItems_ViewModel.DisplayedItem] = []
+  var displayedTrackIDs = [NSIndexPath: String]()
+  var displayedImages = [NSIndexPath: UIImage]()
   
   // MARK: Interface
   @IBOutlet weak var collectionView: UICollectionView! {
-    didSet {  
+    didSet {
+      let flowLayout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+      flowLayout.minimumLineSpacing = 5.0
       let nib = UINib(nibName: "ItemCollectionViewCell", bundle: nil)
       collectionView.registerNib(nib, forCellWithReuseIdentifier: "ItemCollectionViewCell")
     }
@@ -63,6 +67,10 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
     displayedItems = viewModel.displayedItems
     collectionView.reloadData()
   }
+  
+  func requestImageForIndexPath(indexPath: NSIndexPath, imageURLString: String?) {
+    
+  }
 }
 
 // MARK: UICollectionViewDelegateFlowLayout
@@ -80,6 +88,7 @@ extension SearchItemsViewController: UICollectionViewDelegateFlowLayout {
       cell.width = CGRectGetWidth(collectionView.bounds)
       cell.updateCell(displayedItem)
       let cellSize = cell.calculateSize()
+      requestImageForIndexPath(indexPath, imageURLString: displayedItem.imagePath)
       return cellSize
   }
 }
@@ -117,8 +126,20 @@ extension SearchItemsViewController: UICollectionViewDataSource {
     var cell = collectionView.dequeueReusableCellWithReuseIdentifier("ItemCollectionViewCell",
       forIndexPath: indexPath) as? ItemCollectionViewCell
     
-    if  let itemCell = cell {
+    if let itemCell = cell {
       itemCell.updateCell(displayedItem)
+      
+      if displayedTrackIDs[indexPath] != displayedItem.trackID {
+        if let imageString = displayedItem.imagePath {
+          ItemImage().imageForString(imageString, completion: { (image) -> Void in
+            
+            itemCell.imageView.image = image
+            self.displayedTrackIDs[indexPath] = displayedItem.trackID
+            self.displayedImages[indexPath] = image
+          })
+        }
+      }
+      
     } else {
       cell = ItemCollectionViewCell(coder: NSCoder())
     }
