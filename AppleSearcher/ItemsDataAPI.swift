@@ -17,20 +17,24 @@ class ItemsDataAPI: SearchItemsStoreProtocol {
     return NSURLSession.init(configuration: sessionConfiguration)
   }()
   
-  func fetchItems(searchString: String, completionHandler: (items: () throws -> [Item]) -> Void) {
-    let URLString = baseURLString + formatString(searchString)
-    let URL = NSURL(string: URLString)
-    
-    let dataTask = session.dataTaskWithURL(URL!) { (data, response, error) -> Void in
+  func fetchItems(request: SearchItems_FetchItems_Request,
+    completionHandler: (items: () throws -> [Item]) -> Void) {
+      let offsetString = NSString.init(format: "&offset=%d", request.offset) as String
+      let itemsInRequestString = NSString.init(format: "&limit=%d", request.itemsInRequest) as String
       
-      do {
-        let items = try self.getItems(data)
-        completionHandler{ return items }
-      } catch {
-        completionHandler { throw ItemsStoreError.CannotFetch("Cannot fetch items") }
+      let URLString = baseURLString + formatString(request.searchString) + itemsInRequestString + offsetString
+      let URL = NSURL(string: URLString)
+      
+      let dataTask = session.dataTaskWithURL(URL!) { (data, response, error) -> Void in
+        
+        do {
+          let items = try self.getItems(data)
+          completionHandler{ return items }
+        } catch {
+          completionHandler { throw ItemsStoreError.CannotFetch("Cannot fetch items") }
+        }
       }
-    }
-    dataTask.resume()
+      dataTask.resume()
   }
   
   func formatString(string: String) -> String {

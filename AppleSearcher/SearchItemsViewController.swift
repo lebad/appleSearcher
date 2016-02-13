@@ -28,7 +28,8 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   
   var displayedItems: [SearchItems_FetchItems_ViewModel.DisplayedItem] = []
   var displayedTrackIDs = [NSIndexPath: String]()
-  var displayedImages = [NSIndexPath: UIImage]()
+  
+  let itemsInRequest = 20
   
   // MARK: Interface
   @IBOutlet weak var collectionView: UICollectionView! {
@@ -66,10 +67,8 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   func displayFetchedItems(viewModel: SearchItems_FetchItems_ViewModel) {
     displayedItems = viewModel.displayedItems
     collectionView.reloadData()
-  }
-  
-  func requestImageForIndexPath(indexPath: NSIndexPath, imageURLString: String?) {
     
+//    collectionView.reloadItemsAtIndexPaths(<#T##indexPaths: [NSIndexPath]##[NSIndexPath]#>)
   }
 }
 
@@ -88,7 +87,6 @@ extension SearchItemsViewController: UICollectionViewDelegateFlowLayout {
       cell.width = CGRectGetWidth(collectionView.bounds)
       cell.updateCell(displayedItem)
       let cellSize = cell.calculateSize()
-      requestImageForIndexPath(indexPath, imageURLString: displayedItem.imagePath)
       return cellSize
   }
 }
@@ -97,7 +95,8 @@ extension SearchItemsViewController: UISearchBarDelegate {
   // MARK: UISearchBarDelegate
   
   func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-    let request = SearchItems_FetchItems_Request(searchString: searchText)
+    let request = SearchItems_FetchItems_Request(searchString: searchText,
+      offset: displayedItems.count, itemsInRequest: self.itemsInRequest)
     output.fetchItems(request)
   }
 }
@@ -128,6 +127,7 @@ extension SearchItemsViewController: UICollectionViewDataSource {
     
     if let itemCell = cell {
       itemCell.updateCell(displayedItem)
+      itemCell.numberLabel.text = NSString.init(format: "%d", indexPath.row) as String
       
       if displayedTrackIDs[indexPath] != displayedItem.trackID {
         if let imageString = displayedItem.imagePath {
@@ -135,7 +135,6 @@ extension SearchItemsViewController: UICollectionViewDataSource {
             
             itemCell.imageView.image = image
             self.displayedTrackIDs[indexPath] = displayedItem.trackID
-            self.displayedImages[indexPath] = image
           })
         }
       }

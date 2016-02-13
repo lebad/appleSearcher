@@ -12,7 +12,7 @@ class ItemsDataStore: SearchItemsStoreProtocol {
   
   private var items = [Item]()
   
-  func fetchItems(searchString: String, completionHandler: (items: () throws -> [Item]) -> Void) {
+  func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: () throws -> [Item]) -> Void) {
     completionHandler { return self.items }
   }
   

@@ -29,7 +29,7 @@ class SearchItemsInteractor: SearchItemsInteractorInput
   // MARK: Business logic
   
   func fetchItems(request: SearchItems_FetchItems_Request) {
-    worker.fetchItems(request.searchString) { (items) -> Void in
+    worker.fetchItems(request) { (items) -> Void in
       let response = SearchItems_FetchItems_Response(items: items)
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
         self.output.presentFetchedItems(response)

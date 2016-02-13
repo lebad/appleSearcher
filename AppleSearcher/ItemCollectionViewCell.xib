@@ -21,6 +21,13 @@
                             <constraint firstAttribute="width" constant="100" id="q03-4p-nml"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WDJ-Ws-3me">
+                        <rect key="frame" x="40" y="32" width="19" height="36"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                        <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nOx-Qt-xzf">
                         <rect key="frame" x="108" y="8" width="257" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -38,6 +45,7 @@
             </view>
             <color key="backgroundColor" red="0.92549019610000005" green="0.93725490199999995" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstItem="WDJ-Ws-3me" firstAttribute="centerY" secondItem="X0D-pA-fsf" secondAttribute="centerY" id="0a7-kQ-g1X"/>
                 <constraint firstAttribute="trailing" secondItem="nOx-Qt-xzf" secondAttribute="trailing" constant="8" id="3JN-wh-B8z"/>
                 <constraint firstItem="4Cp-DB-QOk" firstAttribute="leading" secondItem="X0D-pA-fsf" secondAttribute="trailing" constant="8" id="8tJ-WH-3bF"/>
                 <constraint firstItem="nOx-Qt-xzf" firstAttribute="leading" secondItem="X0D-pA-fsf" secondAttribute="trailing" constant="8" id="FDl-Zc-33x"/>
@@ -48,12 +56,14 @@
                 <constraint firstAttribute="trailing" secondItem="4Cp-DB-QOk" secondAttribute="trailing" constant="8" id="Qem-rt-9rO"/>
                 <constraint firstItem="X0D-pA-fsf" firstAttribute="leading" secondItem="J2b-wI-LO2" secondAttribute="leading" id="peg-Q5-FDR"/>
                 <constraint firstItem="X0D-pA-fsf" firstAttribute="top" secondItem="J2b-wI-LO2" secondAttribute="top" id="yco-OI-fQK"/>
+                <constraint firstItem="WDJ-Ws-3me" firstAttribute="centerX" secondItem="X0D-pA-fsf" secondAttribute="centerX" id="ygK-Te-Ek6"/>
             </constraints>
             <size key="customSize" width="394" height="90"/>
             <connections>
                 <outlet property="descriptionLabel" destination="4Cp-DB-QOk" id="LSo-yc-Meu"/>
                 <outlet property="imageView" destination="X0D-pA-fsf" id="ghz-eI-yxz"/>
                 <outlet property="nameLabel" destination="nOx-Qt-xzf" id="nkG-lg-diz"/>
+                <outlet property="numberLabel" destination="WDJ-Ws-3me" id="biO-St-bEw"/>
             </connections>
             <point key="canvasLocation" x="130.5" y="187"/>
         </collectionViewCell>

@@ -14,6 +14,8 @@ import UIKit
 struct SearchItems_FetchItems_Request
 {
   var searchString: String
+  var offset: Int
+  var itemsInRequest: Int
 }
 
 struct SearchItems_FetchItems_Response

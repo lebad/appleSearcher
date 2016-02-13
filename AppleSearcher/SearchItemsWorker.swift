@@ -19,8 +19,8 @@ class SearchItemsWorker
     self.itemsStore = itemsStore
   }
   
-  func fetchItems(searchString: String, completionHandler: (items: [Item]) -> Void) {
-    itemsStore.fetchItems(searchString) { (items) -> Void in
+  func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: [Item]) -> Void) {
+    itemsStore.fetchItems(request) { (items) -> Void in
       do {
         let items = try items()
         completionHandler(items: items)
@@ -32,7 +32,7 @@ class SearchItemsWorker
 }
 
 protocol SearchItemsStoreProtocol {
-  func fetchItems(searchString: String, completionHandler: (items: () throws -> [Item]) -> Void)
+  func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: () throws -> [Item]) -> Void)
 }
 
 typealias ItemsStoreFetchOrdersCompletionHandler = (result: ItemsStoreResult<[Item]>) -> Void
