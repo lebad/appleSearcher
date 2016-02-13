@@ -14,15 +14,17 @@ struct Item: Equatable {
   var imageURLString: String?
   
   init(responseObject: [String: AnyObject]) {
-    if let name = responseObject["artistName"] as? String {
-      self.name = name
+    self.name = getValue(responseObject, string: "artistName")
+    self.description = getValue(responseObject, string: "trackCensoredName")
+    self.imageURLString = getValue(responseObject, string: "artworkUrl100")
+  }
+  
+  func getValue(responseObject: [String: AnyObject], string: String) -> String {
+    var value = ""
+    if let tempVal = responseObject[string] as? String {
+      value = tempVal
     }
-    if let description = responseObject["trackCensoredName"] as? String {
-      self.description = description
-    }
-    if let imageURLString = responseObject["artworkUrl100"] as? String {
-      self.imageURLString = imageURLString
-    }
+    return value
   }
 }
 

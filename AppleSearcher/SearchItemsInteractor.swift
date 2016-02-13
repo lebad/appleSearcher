@@ -31,20 +31,9 @@ class SearchItemsInteractor: SearchItemsInteractorInput
   func fetchItems(request: SearchItems_FetchItems_Request) {
     worker.fetchItems(request.searchString) { (items) -> Void in
       let response = SearchItems_FetchItems_Response(items: items)
-      self.output.presentFetchedItems(response)
+      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        self.output.presentFetchedItems(response)
+      })
     }
   }
-  
-//  func doSomething(request: SearchItems_FetchItems_Request)
-//  {
-//    // NOTE: Create some Worker to do the work
-//    
-//    worker = SearchItemsWorker()
-//    worker.doSomeWork()
-//    
-//    // NOTE: Pass the result to the Presenter
-//    
-//    let response = SearchItemsResponse()
-//    output.presentSomething(response)
-//  }
 }

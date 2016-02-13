@@ -25,7 +25,6 @@ class ItemsDataAPI: SearchItemsStoreProtocol {
       
       do {
         let items = try self.getItems(data)
-        print(items)
         completionHandler{ return items }
       } catch {
         completionHandler { throw ItemsStoreError.CannotFetch("Cannot fetch items") }
@@ -53,6 +52,7 @@ class ItemsDataAPI: SearchItemsStoreProtocol {
     
     if let responseData = responseData {
       let json = try NSJSONSerialization.JSONObjectWithData(responseData, options: []) as! [String: AnyObject]
+//      print(json)
       
       if let results = json["results"] as? [[String: AnyObject]] {
         for result in results {

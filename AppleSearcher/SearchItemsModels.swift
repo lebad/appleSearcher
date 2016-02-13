@@ -24,9 +24,9 @@ struct SearchItems_FetchItems_Response
 struct SearchItems_FetchItems_ViewModel
 {
   struct DisplayedItem {
-    var name: String
-    var description: String
-    var imagePath: String
+    var name: String?
+    var description: String?
+    var imagePath: String?
   }
   var displayedItems: [DisplayedItem]
 }
