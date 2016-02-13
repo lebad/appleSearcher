@@ -40,7 +40,7 @@ class SearchItemsWorkerTests: XCTestCase
   
   // MARK: Test doubles
   
-  class ItemsDataStoreSpy: ItemsDataStore {
+  class ItemsDataStoreSpy: ItemsDataAPI { //временно
     
     var fetchItemsCalled = false
     
@@ -58,7 +58,7 @@ class SearchItemsWorkerTests: XCTestCase
   func testFetchItemsShouldReturnListOfItems() {
     // Given
     let itemDataStoreSpy = sut.itemsStore as! ItemsDataStoreSpy
-    let searchString = "BBB"
+    let searchString = "Red hot chili peppers"
     
     // When
     let expectation = expectationWithDescription("Wait for the fecth items result")

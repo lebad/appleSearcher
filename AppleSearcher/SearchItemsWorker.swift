@@ -33,6 +33,37 @@ class SearchItemsWorker
 
 protocol SearchItemsStoreProtocol {
   func fetchItems(searchString: String, completionHandler: (items: () throws -> [Item]) -> Void)
+  
+//  func fetchItems(completionHandler: OrdersStoreFetchOrdersCompletionHandler)
+}
+
+typealias ItemsStoreFetchOrdersCompletionHandler = (result: ItemsStoreResult<[Item]>) -> Void
+
+enum ItemsStoreResult<U>
+{
+  case Success(result: U)
+  case Failure(error: ItemsStoreError)
+}
+
+// MARK: - Orders store CRUD operation errors
+
+enum ItemsStoreError: Equatable, ErrorType
+{
+  case CannotFetch(String)
+  case CannotCreate(String)
+  case CannotUpdate(String)
+  case CannotDelete(String)
+}
+
+func ==(lhs: ItemsStoreError, rhs: ItemsStoreError) -> Bool
+{
+  switch (lhs, rhs) {
+  case (.CannotFetch(let a), .CannotFetch(let b)) where a == b: return true
+  case (.CannotCreate(let a), .CannotCreate(let b)) where a == b: return true
+  case (.CannotUpdate(let a), .CannotUpdate(let b)) where a == b: return true
+  case (.CannotDelete(let a), .CannotDelete(let b)) where a == b: return true
+  default: return false
+  }
 }
 
 

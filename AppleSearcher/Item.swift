@@ -11,12 +11,24 @@ import Foundation
 struct Item: Equatable {
   var name: String?
   var description: String?
-  var itemImagePath: String?
+  var imageURLString: String?
+  
+  init(responseObject: [String: AnyObject]) {
+    if let name = responseObject["artistName"] as? String {
+      self.name = name
+    }
+    if let description = responseObject["trackCensoredName"] as? String {
+      self.description = description
+    }
+    if let imageURLString = responseObject["artworkUrl100"] as? String {
+      self.imageURLString = imageURLString
+    }
+  }
 }
 
 func ==(lhs: Item, rhs: Item) -> Bool
 {
   return lhs.name == rhs.name
       && lhs.description == rhs.description
-      && lhs.itemImagePath == rhs.itemImagePath
+      && lhs.imageURLString == rhs.imageURLString
 }

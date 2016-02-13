@@ -58,7 +58,7 @@ class SearchItemsPresenterTests: XCTestCase
     let searchItemsPresenterOutputSpy = SearchItemsPresenterOutputSpy()
     sut.output = searchItemsPresenterOutputSpy
     
-    let items = [Item(name: "RHCP", description: "ROCK", itemImagePath: "/var/folders/.rhcp.jpg")]
+    let items = [Item(name: "RHCP", description: "ROCK", imageURLString: "/var/folders/.rhcp.jpg")]
     let responce = SearchItems_FetchItems_Response(items: items)
     
     // When
@@ -78,7 +78,7 @@ class SearchItemsPresenterTests: XCTestCase
     let searchItemsPresenterOutputSpy = SearchItemsPresenterOutputSpy()
     sut.output = searchItemsPresenterOutputSpy
     
-    let items = [Item(name: "RHCP", description: "ROCK", itemImagePath: "/var/folders/.rhcp.jpg")]
+    let items = [Item(name: "RHCP", description: "ROCK", imageURLString: "/var/folders/.rhcp.jpg")]
     let responce = SearchItems_FetchItems_Response(items: items)
     
     // When

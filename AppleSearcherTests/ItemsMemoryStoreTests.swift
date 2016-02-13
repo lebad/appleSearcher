@@ -22,8 +22,8 @@ class ItemsMemoryStoreTests: XCTestCase {
     sut = ItemsMemoryStore()
     
     testItems = [
-      Item(name: "RED", description: "HOT", itemImagePath: saveImageOnDisk()),
-      Item(name: "rutuiyett", description: "turiyiuryuiy", itemImagePath: saveImageOnDisk())
+      Item(name: "RED", description: "HOT", imageURLString: saveImageOnDisk()),
+      Item(name: "rutuiyett", description: "turiyiuryuiy", imageURLString: saveImageOnDisk())
     ]
     sut.items = testItems
   }
@@ -57,13 +57,12 @@ class ItemsMemoryStoreTests: XCTestCase {
     
   // MARK: - Test CRUD operations - Inner closure
   
-  func testFetchOrdersShouldReturnListOfOrders_InnerClosure()
-  {
+  func testFetchOrdersShouldReturnListOfItems_InnerClosure() {
     // Given
     
     // When
     var returnedItems = [Item]()
-    let expectation = expectationWithDescription("Wait for fetchOrders() to return")
+    let expectation = expectationWithDescription("Wait for fetchItems() to return")
     sut.fetchItems("AAA") { (items) -> Void in
       returnedItems = try! items()
       expectation.fulfill()
@@ -72,10 +71,10 @@ class ItemsMemoryStoreTests: XCTestCase {
     }
     
     // Then
-    XCTAssertEqual(returnedItems.count, testItems.count, "fetchOrders() should return a list of orders")
+    XCTAssertEqual(returnedItems.count, testItems.count, "fetchItems() should return a list of orders")
     
     for item in returnedItems {
-      XCTAssertTrue(testItems.contains(item), "Returned orders should match the orders in the data store")
+      XCTAssertTrue(testItems.contains(item), "Returned ietms should match the orders in the data store")
     }
   }
   

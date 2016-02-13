@@ -9,7 +9,14 @@
 import Foundation
 
 class ItemsDataStore: SearchItemsStoreProtocol {
+  
+  private var items = [Item]()
+  
   func fetchItems(searchString: String, completionHandler: (items: () throws -> [Item]) -> Void) {
-    
+    completionHandler { return self.items }
   }
+  
+//  func fetchItems(completionHandler: OrdersStoreFetchOrdersCompletionHandler) {
+//    
+//  }
 }
