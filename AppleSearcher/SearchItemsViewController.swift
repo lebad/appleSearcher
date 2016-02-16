@@ -27,9 +27,12 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   var router: SearchItemsRouter!
   
   var displayedItems: [SearchItems_FetchItems_ViewModel.DisplayedItem] = []
-  var displayedTrackIDs = [NSIndexPath: String]()
+  var cellHandlers: [NSIndexPath: ItemCellHandler] = [:]
+  var itemImages: [Int: UIImage] = [:]
   
   let itemsInRequest = 20
+  
+  var didChangeText = false
   
   // MARK: Interface
   @IBOutlet weak var collectionView: UICollectionView! {
@@ -65,10 +68,43 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   // MARK: Display logic
   
   func displayFetchedItems(viewModel: SearchItems_FetchItems_ViewModel) {
-    displayedItems = viewModel.displayedItems
-    collectionView.reloadData()
     
-//    collectionView.reloadItemsAtIndexPaths(<#T##indexPaths: [NSIndexPath]##[NSIndexPath]#>)
+    if didChangeText == true {
+      displayedItems = viewModel.displayedItems
+      didChangeText = false
+    } else {
+      displayedItems += viewModel.displayedItems
+    }
+    
+    var indexPaths = [NSIndexPath]()
+    let index = displayedItems.count - viewModel.displayedItems.count
+    
+    for var i = index; i < displayedItems.count; i++ {
+      indexPaths.append(NSIndexPath.init(forItem: i, inSection: 0))
+    }
+    collectionView.reloadData()
+  }
+  
+  // MARK: Scroll
+  
+//  func scrollViewDidScroll(scrollView: UIScrollView) {
+//    
+//    let indexPaths = collectionView.indexPathsForVisibleItems()
+//    let threshold = self.displayedItems.count - 2
+//    
+//    for indexPath in indexPaths {
+//      if indexPath.row >= threshold {
+//        if let text = searchBar.text {
+//          output.fetchItems(request(text))
+//        }
+//      }
+//    }
+//  }
+  
+  func request(searchString: String) -> SearchItems_FetchItems_Request {
+    return SearchItems_FetchItems_Request(searchString: searchString,
+      offset: displayedItems.count,
+      itemsInRequest: self.itemsInRequest)
   }
 }
 
@@ -91,20 +127,30 @@ extension SearchItemsViewController: UICollectionViewDelegateFlowLayout {
   }
 }
 
+// MARK: UISearchBarDelegate
+
 extension SearchItemsViewController: UISearchBarDelegate {
-  // MARK: UISearchBarDelegate
   
   func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-    let request = SearchItems_FetchItems_Request(searchString: searchText,
-      offset: displayedItems.count, itemsInRequest: self.itemsInRequest)
-    output.fetchItems(request)
+    didChangeText = true
+    output.fetchItems(request(searchText))
   }
 }
 
 //MARK: UICollectionViewDelegate
 
 extension SearchItemsViewController: UICollectionViewDelegate {
-  
+  func collectionView(collectionView: UICollectionView,
+    willDisplayCell cell: UICollectionViewCell,
+    forItemAtIndexPath indexPath: NSIndexPath) {
+      
+      if indexPath.row == displayedItems.count - 6 {
+        
+        if let text = searchBar.text {
+          output.fetchItems(request(text))
+        }
+      }
+  }
 }
 
 //MARK: UICollectionViewDataSource
@@ -119,31 +165,39 @@ extension SearchItemsViewController: UICollectionViewDataSource {
     return displayedItems.count
   }
   
-  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+  func collectionView(collectionView: UICollectionView,
+    cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+      
     let displayedItem = displayedItems[indexPath.row]
-    
-    var cell = collectionView.dequeueReusableCellWithReuseIdentifier("ItemCollectionViewCell",
-      forIndexPath: indexPath) as? ItemCollectionViewCell
-    
-    if let itemCell = cell {
-      itemCell.updateCell(displayedItem)
-      itemCell.numberLabel.text = NSString.init(format: "%d", indexPath.row) as String
+    let handler = getHandler(displayedItem, indexPath: indexPath)
+    handler.delegate = self
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ItemCollectionViewCell",
+      forIndexPath: indexPath) as! ItemCollectionViewCell
+    handler.updateDataFor(cell)
       
-      if displayedTrackIDs[indexPath] != displayedItem.trackID {
-        if let imageString = displayedItem.imagePath {
-          ItemImage().imageForString(imageString, completion: { (image) -> Void in
-            
-            itemCell.imageView.image = image
-            self.displayedTrackIDs[indexPath] = displayedItem.trackID
-          })
-        }
-      }
-      
+    return cell
+  }
+  
+  func getHandler(displayedItem: SearchItems_FetchItems_ViewModel.DisplayedItem, indexPath: NSIndexPath) -> ItemCellHandler {
+    if let handler: ItemCellHandler = cellHandlers[indexPath] {
+      handler.updateDisplayedItem(displayedItem)
     } else {
-      cell = ItemCollectionViewCell(coder: NSCoder())
+      cellHandlers[indexPath] = ItemCellHandler(displayedItem: displayedItem, index: indexPath.row)
     }
-    
-    return cell!
+    return cellHandlers[indexPath]!
+  }
+}
+
+//MARK: ItemCellHandlerDelegate
+
+extension SearchItemsViewController: ItemCellHandlerDelegate {
+  
+  func getImageAt(trackID id: Int) -> UIImage? {
+    return itemImages[id]
+  }
+  
+  func setImage(image: UIImage, atTrackID id: Int) {
+    itemImages[id] =  image
   }
 }
 

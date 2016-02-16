@@ -14,8 +14,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var numberLabel: UILabel!
   
-  @IBOutlet private weak var nameLabel: UILabel!
-  @IBOutlet private weak var descriptionLabel: UILabel!
+  @IBOutlet weak var nameLabel: UILabel!
+  @IBOutlet weak var descriptionLabel: UILabel!
   
   lazy var customConstraints: [NSLayoutConstraint] = {
     return [NSLayoutConstraint]()

@@ -12,21 +12,13 @@ struct Item: Equatable {
   var name: String?
   var description: String?
   var imageURLString: String?
-  var trackID: String?
+  var trackID: Int?
   
   init(responseObject: [String: AnyObject]) {
-    self.name = getValue(responseObject, string: "artistName")
-    self.description = getValue(responseObject, string: "trackCensoredName")
-    self.imageURLString = getValue(responseObject, string: "artworkUrl100")
-    self.trackID = getValue(responseObject, string: "trackId")
-  }
-  
-  func getValue(responseObject: [String: AnyObject], string: String) -> String {
-    var value = ""
-    if let tempVal = responseObject[string] as? String {
-      value = tempVal
-    }
-    return value
+    self.name = responseObject["artistName"] as? String
+    self.description = responseObject["trackCensoredName"] as? String
+    self.imageURLString = responseObject["artworkUrl100"] as? String
+    self.trackID = responseObject["trackId"] as? Int
   }
 }
 

@@ -29,9 +29,13 @@ struct SearchItems_FetchItems_ViewModel
     var name: String?
     var description: String?
     var imagePath: String?
-    var trackID: String?
+    var trackID: Int?
   }
   var displayedItems: [DisplayedItem]
+}
+
+func !=(lhs: SearchItems_FetchItems_ViewModel.DisplayedItem, rhs: SearchItems_FetchItems_ViewModel.DisplayedItem) -> Bool {
+  return lhs.trackID != rhs.trackID
 }
 
 

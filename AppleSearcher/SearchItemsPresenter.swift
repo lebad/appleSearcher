@@ -34,7 +34,7 @@ class SearchItemsPresenter: SearchItemsPresenterInput
       let name = item.name!
       let description = item.description!
       let imagePath = item.imageURLString!
-      let trackID = item.trackID
+      let trackID = item.trackID!
       let displayedItem = SearchItems_FetchItems_ViewModel.DisplayedItem(name: name,
         description: description,
         imagePath: imagePath,
