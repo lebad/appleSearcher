@@ -63,6 +63,8 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tapWithGesture:"))
   }
   
   // MARK: Display logic
@@ -85,26 +87,16 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
     collectionView.reloadData()
   }
   
-  // MARK: Scroll
-  
-//  func scrollViewDidScroll(scrollView: UIScrollView) {
-//    
-//    let indexPaths = collectionView.indexPathsForVisibleItems()
-//    let threshold = self.displayedItems.count - 2
-//    
-//    for indexPath in indexPaths {
-//      if indexPath.row >= threshold {
-//        if let text = searchBar.text {
-//          output.fetchItems(request(text))
-//        }
-//      }
-//    }
-//  }
-  
   func request(searchString: String) -> SearchItems_FetchItems_Request {
     return SearchItems_FetchItems_Request(searchString: searchString,
       offset: displayedItems.count,
       itemsInRequest: self.itemsInRequest)
+  }
+  
+  // MARK: Gestures
+  
+  func tapWithGesture(tapGestureRecognizer: UITapGestureRecognizer) {
+    searchBar.resignFirstResponder()
   }
 }
 
@@ -134,6 +126,10 @@ extension SearchItemsViewController: UISearchBarDelegate {
   func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
     didChangeText = true
     output.fetchItems(request(searchText))
+  }
+  
+  func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    searchBar.resignFirstResponder()
   }
 }
 
