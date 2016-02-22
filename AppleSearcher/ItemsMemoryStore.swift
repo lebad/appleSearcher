@@ -12,7 +12,16 @@ class ItemsMemoryStore: SearchItemsStoreProtocol {
   
   var items = [Item]()
   
-  func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: () throws -> [Item]) -> Void) {
-    completionHandler { return self.items }
+  func fetchItems(request: SearchItems_FetchItems_Request,
+    completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
+    completionHandler(items: [], error: nil)
+  }
+  
+  func fetchItem(trackID: NSNumber?, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void) {
+    //
+  }
+  
+  func createItem(itemToCreate: Item, completionHandler: (error: ItemsStoreError?) -> Void) {
+    //
   }
 }

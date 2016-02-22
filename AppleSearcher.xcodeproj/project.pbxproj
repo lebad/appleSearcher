@@ -31,6 +31,10 @@
 		556F091A1C6F9F6800CDFB58 /* ItemImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556F09181C6F9F6800CDFB58 /* ItemImage.swift */; };
 		556F091C1C72382F00CDFB58 /* ItemCellHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556F091B1C72382F00CDFB58 /* ItemCellHandler.swift */; };
 		556F091D1C72382F00CDFB58 /* ItemCellHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556F091B1C72382F00CDFB58 /* ItemCellHandler.swift */; };
+		55DE212E1C7B4A2500CDD68C /* ManagedItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DE212C1C7B4A2500CDD68C /* ManagedItem+CoreDataProperties.swift */; };
+		55DE212F1C7B4A2500CDD68C /* ManagedItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DE212C1C7B4A2500CDD68C /* ManagedItem+CoreDataProperties.swift */; };
+		55DE21301C7B4A2500CDD68C /* ManagedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DE212D1C7B4A2500CDD68C /* ManagedItem.swift */; };
+		55DE21311C7B4A2500CDD68C /* ManagedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DE212D1C7B4A2500CDD68C /* ManagedItem.swift */; };
 		55DF25E21C5E524000DDC12C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DF25E11C5E524000DDC12C /* AppDelegate.swift */; };
 		55DF25E71C5E524000DDC12C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55DF25E51C5E524000DDC12C /* Main.storyboard */; };
 		55DF25E91C5E524000DDC12C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DF25E81C5E524000DDC12C /* Assets.xcassets */; };
@@ -46,6 +50,9 @@
 		55DF26271C5E83B000DDC12C /* SearchItemsPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DF26211C5E83B000DDC12C /* SearchItemsPresenterTests.swift */; };
 		55DF26291C5E83B000DDC12C /* SearchItemsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DF26221C5E83B000DDC12C /* SearchItemsViewControllerTests.swift */; };
 		55DF262B1C5E83B000DDC12C /* SearchItemsWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DF26231C5E83B000DDC12C /* SearchItemsWorkerTests.swift */; };
+		55E1DCD81C7B1338006472FF /* ItemsCoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1DCD71C7B1338006472FF /* ItemsCoreDataStore.swift */; };
+		55E1DCD91C7B1338006472FF /* ItemsCoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1DCD71C7B1338006472FF /* ItemsCoreDataStore.swift */; };
+		55E1DCDC1C7B1763006472FF /* AppleSearcher.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 55E1DCDA1C7B1763006472FF /* AppleSearcher.xcdatamodeld */; };
 		55EE4AED1C6A6CB3007C4481 /* ItemsDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EE4AEC1C6A6CB3007C4481 /* ItemsDataStoreTests.swift */; };
 		55EE4AEF1C6E5D41007C4481 /* ItemsDataAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EE4AEE1C6E5D41007C4481 /* ItemsDataAPI.swift */; };
 		55EE4AF01C6E5D41007C4481 /* ItemsDataAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EE4AEE1C6E5D41007C4481 /* ItemsDataAPI.swift */; };
@@ -70,6 +77,8 @@
 		556F09151C6F884C00CDFB58 /* ItemCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemCollectionViewCell.xib; sourceTree = "<group>"; };
 		556F09181C6F9F6800CDFB58 /* ItemImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemImage.swift; sourceTree = "<group>"; };
 		556F091B1C72382F00CDFB58 /* ItemCellHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCellHandler.swift; sourceTree = "<group>"; };
+		55DE212C1C7B4A2500CDD68C /* ManagedItem+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		55DE212D1C7B4A2500CDD68C /* ManagedItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedItem.swift; sourceTree = "<group>"; };
 		55DF25DE1C5E524000DDC12C /* AppleSearcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleSearcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55DF25E11C5E524000DDC12C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55DF25E61C5E524000DDC12C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -90,6 +99,8 @@
 		55DF26211C5E83B000DDC12C /* SearchItemsPresenterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchItemsPresenterTests.swift; sourceTree = "<group>"; };
 		55DF26221C5E83B000DDC12C /* SearchItemsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchItemsViewControllerTests.swift; sourceTree = "<group>"; };
 		55DF26231C5E83B000DDC12C /* SearchItemsWorkerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchItemsWorkerTests.swift; sourceTree = "<group>"; };
+		55E1DCD71C7B1338006472FF /* ItemsCoreDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsCoreDataStore.swift; sourceTree = "<group>"; };
+		55E1DCDB1C7B1763006472FF /* AppleSearcher.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppleSearcher.xcdatamodel; sourceTree = "<group>"; };
 		55EE4AEC1C6A6CB3007C4481 /* ItemsDataStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsDataStoreTests.swift; sourceTree = "<group>"; };
 		55EE4AEE1C6E5D41007C4481 /* ItemsDataAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsDataAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -124,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				553190581C614301004977FE /* ItemsDataStore.swift */,
+				55E1DCD71C7B1338006472FF /* ItemsCoreDataStore.swift */,
 				553190691C690BD6004977FE /* ItemsMemoryStore.swift */,
 				55EE4AEE1C6E5D41007C4481 /* ItemsDataAPI.swift */,
 			);
@@ -160,6 +172,7 @@
 		55DF25E01C5E524000DDC12C /* AppleSearcher */ = {
 			isa = PBXGroup;
 			children = (
+				55E1DCE81C7B1CFD006472FF /* CoreData */,
 				553190571C614210004977FE /* Services */,
 				553190531C6139A7004977FE /* Models */,
 				55DF26011C5E525700DDC12C /* Scenes */,
@@ -226,6 +239,16 @@
 				55DF26231C5E83B000DDC12C /* SearchItemsWorkerTests.swift */,
 			);
 			name = Scenes;
+			sourceTree = "<group>";
+		};
+		55E1DCE81C7B1CFD006472FF /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				55E1DCDA1C7B1763006472FF /* AppleSearcher.xcdatamodeld */,
+				55DE212C1C7B4A2500CDD68C /* ManagedItem+CoreDataProperties.swift */,
+				55DE212D1C7B4A2500CDD68C /* ManagedItem.swift */,
+			);
+			name = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,7 +359,9 @@
 				553190551C6139D7004977FE /* Item.swift in Sources */,
 				5531906A1C690BD6004977FE /* ItemsMemoryStore.swift in Sources */,
 				5531904F1C5FE61B004977FE /* SearchItemsConfigurator.swift in Sources */,
+				55DE212E1C7B4A2500CDD68C /* ManagedItem+CoreDataProperties.swift in Sources */,
 				55DF26121C5E594200DDC12C /* SearchItemsRouter.swift in Sources */,
+				55E1DCD81C7B1338006472FF /* ItemsCoreDataStore.swift in Sources */,
 				55EE4AEF1C6E5D41007C4481 /* ItemsDataAPI.swift in Sources */,
 				55DF26141C5E594200DDC12C /* SearchItemsViewController.swift in Sources */,
 				55DF26161C5E594200DDC12C /* SearchItemsWorker.swift in Sources */,
@@ -347,6 +372,8 @@
 				55DF260E1C5E594200DDC12C /* SearchItemsModels.swift in Sources */,
 				55DF25E21C5E524000DDC12C /* AppDelegate.swift in Sources */,
 				556F09131C6F880700CDFB58 /* ItemCollectionViewCell.swift in Sources */,
+				55DE21301C7B4A2500CDD68C /* ManagedItem.swift in Sources */,
+				55E1DCDC1C7B1763006472FF /* AppleSearcher.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,14 +381,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55DE21311C7B4A2500CDD68C /* ManagedItem.swift in Sources */,
 				55DF26251C5E83B000DDC12C /* SearchItemsInteractorTests.swift in Sources */,
 				556F091D1C72382F00CDFB58 /* ItemCellHandler.swift in Sources */,
 				55DF25F71C5E524000DDC12C /* AppleSearcherTests.swift in Sources */,
 				553190621C690A2D004977FE /* SearchItemsModels.swift in Sources */,
 				553190641C690A33004977FE /* SearchItemsRouter.swift in Sources */,
+				55E1DCD91C7B1338006472FF /* ItemsCoreDataStore.swift in Sources */,
 				556F09141C6F880700CDFB58 /* ItemCollectionViewCell.swift in Sources */,
 				5531905E1C690A21004977FE /* ItemsDataStore.swift in Sources */,
 				553190601C690A27004977FE /* SearchItemsConfigurator.swift in Sources */,
+				55DE212F1C7B4A2500CDD68C /* ManagedItem+CoreDataProperties.swift in Sources */,
 				553190661C690A38004977FE /* SearchItemsWorker.swift in Sources */,
 				553190631C690A30004977FE /* SearchItemsPresenter.swift in Sources */,
 				5531906B1C690BD6004977FE /* ItemsMemoryStore.swift in Sources */,
@@ -495,11 +525,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AppleSearcher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.andreylebedev.AppleSearcher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -507,6 +539,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AppleSearcher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -570,6 +603,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		55E1DCDA1C7B1763006472FF /* AppleSearcher.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				55E1DCDB1C7B1763006472FF /* AppleSearcher.xcdatamodel */,
+			);
+			currentVersion = 55E1DCDB1C7B1763006472FF /* AppleSearcher.xcdatamodel */;
+			path = AppleSearcher.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 55DF25D61C5E524000DDC12C /* Project object */;
 }

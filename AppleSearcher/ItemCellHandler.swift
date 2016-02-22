@@ -37,8 +37,10 @@ class ItemCellHandler {
     
     if let image = self.delegate?.getImageAt(trackID: displayedItem.trackID!) {
       cell.imageView.image = image
+//      print("get")
     } else {
       downloadOrGetImageForCell(cell)
+//      print("download")
     }
   }
   

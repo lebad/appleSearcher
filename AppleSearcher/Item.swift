@@ -14,6 +14,13 @@ struct Item: Equatable {
   var imageURLString: String?
   var trackID: Int?
   
+  init(name: String?, description: String?, imageURLString: String?, trackID: Int?) {
+    self.name = name
+    self.description = description
+    self.imageURLString = imageURLString
+    self.trackID = trackID
+  }
+  
   init(responseObject: [String: AnyObject]) {
     self.name = responseObject["artistName"] as? String
     self.description = responseObject["trackCensoredName"] as? String

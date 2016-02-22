@@ -19,20 +19,21 @@ class SearchItemsWorker
     self.itemsStore = itemsStore
   }
   
-  func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: [Item]) -> Void) {
-    itemsStore.fetchItems(request) { (items) -> Void in
-      do {
-        let items = try items()
-        completionHandler(items: items)
-      } catch {
-        completionHandler(items: [])
-      }
+  
+  func fetchItems(request: SearchItems_FetchItems_Request,
+    completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
+      itemsStore.fetchItems(request) { (items, error) -> Void in
+        if error == nil {
+          completionHandler(items: items, error: nil)
+        }
     }
   }
 }
 
 protocol SearchItemsStoreProtocol {
-  func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: () throws -> [Item]) -> Void)
+  func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: [Item], error: ItemsStoreError?) -> Void)
+  func fetchItem(trackID: NSNumber?, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void)
+  func createItem(itemToCreate: Item, completionHandler: (error: ItemsStoreError?) -> Void)
 }
 
 typealias ItemsStoreFetchOrdersCompletionHandler = (result: ItemsStoreResult<[Item]>) -> Void

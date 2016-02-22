@@ -17,24 +17,38 @@ class ItemsDataAPI: SearchItemsStoreProtocol {
     return NSURLSession.init(configuration: sessionConfiguration)
   }()
   
-  func fetchItems(request: SearchItems_FetchItems_Request,
-    completionHandler: (items: () throws -> [Item]) -> Void) {
-      let offsetString = NSString.init(format: "&offset=%d", request.offset) as String
-      let itemsInRequestString = NSString.init(format: "&limit=%d", request.itemsInRequest) as String
-      
-      let URLString = baseURLString + formatString(request.searchString) + itemsInRequestString + offsetString
-      let URL = NSURL(string: URLString)
-      
-      let dataTask = session.dataTaskWithURL(URL!) { (data, response, error) -> Void in
-        
+  func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
+      let URL = formatURLForRequest(request)
+    
+      let dataTask = session.dataTaskWithURL(URL) { (data, response, error) -> Void in
         do {
           let items = try self.getItems(data)
-          completionHandler{ return items }
+          completionHandler(items: items, error: nil)
         } catch {
-          completionHandler { throw ItemsStoreError.CannotFetch("Cannot fetch items") }
+          completionHandler(items: [], error: ItemsStoreError.CannotFetch("Cannot fetch items from api"))
         }
       }
       dataTask.resume()
+  }
+  
+  func formatURLForRequest(request: SearchItems_FetchItems_Request) -> NSURL {
+    let offsetString = NSString.init(format: "&offset=%d", request.offset) as String
+    let itemsInRequestString = NSString.init(format: "&limit=%d", request.itemsInRequest) as String
+    let URLString = baseURLString + formatString(request.searchString) + itemsInRequestString + offsetString
+    
+    if let url = NSURL(string: URLString) {
+      return url
+    } else {
+      return NSURL()
+    }
+  }
+  
+  func fetchItem(trackID: NSNumber?, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void) {
+    //
+  }
+  
+  func createItem(itemToCreate: Item, completionHandler: (error: ItemsStoreError?) -> Void) {
+    //
   }
   
   func formatString(string: String) -> String {
