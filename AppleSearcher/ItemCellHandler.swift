@@ -33,14 +33,15 @@ class ItemCellHandler {
     
     cell.nameLabel.text = displayedItem.name
     cell.descriptionLabel.text = displayedItem.description
-    cell.numberLabel.text = NSString.init(format: "%d", index) as String
+    cell.numberLabel.text = NSString.init(format: "%d", index + 1) as String
+    cell.imageView.image = nil
     
     if let image = self.delegate?.getImageAt(trackID: displayedItem.trackID!) {
-      cell.imageView.image = image
-//      print("get")
+      if cell.imageView.image != image {
+        cell.imageView.image = image
+      }
     } else {
       downloadOrGetImageForCell(cell)
-//      print("download")
     }
   }
   

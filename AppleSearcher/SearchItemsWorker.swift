@@ -33,7 +33,8 @@ class SearchItemsWorker
 protocol SearchItemsStoreProtocol {
   func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: [Item], error: ItemsStoreError?) -> Void)
   func fetchItem(trackID: NSNumber?, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void)
-  func createItem(itemToCreate: Item, completionHandler: (error: ItemsStoreError?) -> Void)
+  func createItem(itemToCreate: Item, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void)
+  func createItems(itemsToCreate: [Item], completionHandler: (error: ItemsStoreError?) -> Void)
 }
 
 typealias ItemsStoreFetchOrdersCompletionHandler = (result: ItemsStoreResult<[Item]>) -> Void

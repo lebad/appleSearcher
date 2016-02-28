@@ -27,25 +27,16 @@ class ItemsDataStore: SearchItemsStoreProtocol {
         if items.count == 0 {
           self.itemsDataAPI.fetchItems(request) { (items, error) -> Void in
             if items.count != 0 {
-              self.items.removeAll()
-              for item in items {
-                self.createItem(item, completionHandler: { (error) -> Void in
-                  
-                  if let trackID = item.trackID {
-                    self.fetchItem(NSNumber(integer: trackID), completionHandler: { (item, error) -> Void in
-                      if let itm = item {
-                        self.items.append(itm)
-                        completionHandler(items: self.items, error: nil)
-                      }
-                    })
-                  }
-
-                  
-                })
-              }
-//              self.fetchItems(request, completionHandler: { (items, error) -> Void in
-//                completionHandler(items: items, error: nil)
-//              })
+              self.createItems(items, completionHandler: { (error) -> Void in
+                if error == nil {
+                  self.itemsDataStore.fetchItems(request, completionHandler: { (items, error) -> Void in
+                    completionHandler(items: items, error: error)
+                  })
+//                  self.fetchItems(request, completionHandler: { (items, error) -> Void in
+//                    completionHandler(items: items, error: nil)
+//                  })
+                }
+              })
             }
           }
         } else {
@@ -58,8 +49,12 @@ class ItemsDataStore: SearchItemsStoreProtocol {
     itemsDataStore.fetchItem(trackID, completionHandler: completionHandler)
   }
   
-  func createItem(itemToCreate: Item, completionHandler: (error: ItemsStoreError?) -> Void) {
+  func createItem(itemToCreate: Item, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void) {
     itemsDataStore.createItem(itemToCreate, completionHandler: completionHandler)
+  }
+  
+  func createItems(itemsToCreate: [Item], completionHandler: (error: ItemsStoreError?) -> Void) {
+    itemsDataStore.createItems(itemsToCreate, completionHandler: completionHandler)
   }
 }
 

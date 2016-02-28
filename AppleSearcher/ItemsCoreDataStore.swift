@@ -88,7 +88,7 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
     }
   }
   
-  func createItem(itemToCreate: Item, completionHandler: (error: ItemsStoreError?) -> Void) {
+  func createItem(itemToCreate: Item, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void) {
     privateManagedObjectContext.performBlock { () -> Void in
       do {
         let managedItem = NSEntityDescription.insertNewObjectForEntityForName("ManagedItem",
@@ -99,10 +99,28 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
         managedItem.imageURLString = itemToCreate.imageURLString
         managedItem.trackID = itemToCreate.trackID
         try self.privateManagedObjectContext.save()
-        completionHandler(error: nil)
+        completionHandler(item: managedItem.toItem(), error: nil)
       } catch {
-        completionHandler(error: ItemsStoreError.CannotCreate("Cannot create order with id \(itemToCreate.trackID)"))
+        completionHandler(item: nil,
+          error: ItemsStoreError.CannotCreate("Cannot create item with id \(itemToCreate.trackID)"))
       }
+    }
+  }
+  
+  func createItems(itemsToCreate: [Item], completionHandler: (error: ItemsStoreError?) -> Void) {
+    do {
+      for item in itemsToCreate {
+        let managedItem = NSEntityDescription.insertNewObjectForEntityForName("ManagedItem",
+          inManagedObjectContext: self.privateManagedObjectContext) as! ManagedItem
+        managedItem.name = item.name
+        managedItem.desription = item.description
+        managedItem.imageURLString = item.imageURLString
+        managedItem.trackID = item.trackID
+      }
+      try self.privateManagedObjectContext.save()
+      completionHandler(error: nil)
+    } catch {
+      completionHandler(error: ItemsStoreError.CannotCreate("Cannot create items"))
     }
   }
 }

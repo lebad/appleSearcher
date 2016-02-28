@@ -15,5 +15,4 @@ class ManagedItem: NSManagedObject {
   func toItem() -> Item {
     return Item(name: name, description: desription, imageURLString: imageURLString, trackID: trackID?.integerValue)
   }
-
 }

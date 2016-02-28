@@ -33,6 +33,7 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   let itemsInRequest = 20
   
   var didChangeText = false
+  var loading = false
   
   // MARK: Interface
   @IBOutlet weak var collectionView: UICollectionView! {
@@ -41,6 +42,8 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
       flowLayout.minimumLineSpacing = 5.0
       let nib = UINib(nibName: "ItemCollectionViewCell", bundle: nil)
       collectionView.registerNib(nib, forCellWithReuseIdentifier: "ItemCollectionViewCell")
+      
+//      collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40.0, right: 0)
     }
   }
 
@@ -49,7 +52,20 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
       searchBar.delegate = self;
     }
   }
-  private var cellSizeCache = NSCache()
+  
+  @IBOutlet weak var mainActivityIndicator: UIActivityIndicatorView! {
+    didSet {
+      mainActivityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+      mainActivityIndicator.hidden = true
+    }
+  }
+  
+  @IBOutlet weak var bottomActivityIndicator: UIActivityIndicatorView! {
+    didSet {
+      bottomActivityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+      bottomActivityIndicator.hidden = true
+    }
+  }
   
   // MARK: Object lifecycle
   
@@ -72,25 +88,72 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   func displayFetchedItems(viewModel: SearchItems_FetchItems_ViewModel) {
     
     if didChangeText == true {
+      
+      collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
       displayedItems = viewModel.displayedItems
       didChangeText = false
+      collectionView.reloadData()
+      loading = false
     } else {
       displayedItems += viewModel.displayedItems
+      
+      UIView.setAnimationsEnabled(false)
+      collectionView.performBatchUpdates({ () -> Void in
+        
+        let indexPaths = self.getIndexPathsFor(viewModel)
+        self.collectionView.insertItemsAtIndexPaths(indexPaths)
+        
+        },
+        completion: { (finished) -> Void in
+          UIView.setAnimationsEnabled(true)
+          self.loading = false
+          self.bottomActivityIndicator.stopAnimating()
+          self.bottomActivityIndicator.hidden = true
+          
+          self.collectionView.setContentOffset(self.collectionView.contentOffset, animated: false)
+
+      })
     }
-    
+    mainActivityIndicator.stopAnimating()
+    mainActivityIndicator.hidden = true
+  }
+  
+  func getIndexPathsFor(viewModel: SearchItems_FetchItems_ViewModel) -> [NSIndexPath] {
     var indexPaths = [NSIndexPath]()
-    let index = displayedItems.count - viewModel.displayedItems.count
-    
-    for var i = index; i < displayedItems.count; i++ {
+    let index = self.displayedItems.count - viewModel.displayedItems.count
+    for var i = index; i < self.displayedItems.count; i++ {
       indexPaths.append(NSIndexPath.init(forItem: i, inSection: 0))
     }
-    collectionView.reloadData()
+    return indexPaths
   }
   
   func request(searchString: String) -> SearchItems_FetchItems_Request {
     return SearchItems_FetchItems_Request(searchString: searchString,
       offset: displayedItems.count,
       itemsInRequest: self.itemsInRequest)
+  }
+  
+  // SCROLL
+  func scrollViewDidScroll(scrollView: UIScrollView) {
+    let currentOffset = scrollView.contentOffset.y
+    let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+    
+    if (maximumOffset - currentOffset) <= -30 {
+      
+      loadSegment()
+    }
+  }
+  
+  func loadSegment() {
+    if loading == false {
+      loading = true
+      
+      self.collectionView.setContentOffset(self.collectionView.contentOffset, animated: false)
+      
+      self.output.fetchItems(self.request(searchBar.text!))
+      self.bottomActivityIndicator.hidden = false
+      self.bottomActivityIndicator.startAnimating()
+    }
   }
   
   // MARK: Gestures
@@ -124,8 +187,18 @@ extension SearchItemsViewController: UICollectionViewDelegateFlowLayout {
 extension SearchItemsViewController: UISearchBarDelegate {
   
   func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-    didChangeText = true
-    output.fetchItems(request(searchText))
+    if loading == false {
+      loading = true
+      
+      didChangeText = true
+      
+      self.itemImages.removeAll()
+      self.output.fetchItems(self.request(searchText))
+      
+      self.mainActivityIndicator.hidden = false
+      self.mainActivityIndicator.startAnimating()
+    }
+    
   }
   
   func searchBarSearchButtonClicked(searchBar: UISearchBar) {
@@ -135,19 +208,21 @@ extension SearchItemsViewController: UISearchBarDelegate {
 
 //MARK: UICollectionViewDelegate
 
-extension SearchItemsViewController: UICollectionViewDelegate {
-  func collectionView(collectionView: UICollectionView,
-    willDisplayCell cell: UICollectionViewCell,
-    forItemAtIndexPath indexPath: NSIndexPath) {
-      
-      if indexPath.row == displayedItems.count - 6 {
-        
-        if let text = searchBar.text {
-          output.fetchItems(request(text))
-        }
-      }
-  }
-}
+//extension SearchItemsViewController: UICollectionViewDelegate {
+//  func collectionView(collectionView: UICollectionView,
+//    willDisplayCell cell: UICollectionViewCell,
+//    forItemAtIndexPath indexPath: NSIndexPath) {
+//      
+//      if indexPath.row == displayedItems.count - 1 {
+//        
+//        if let text = searchBar.text {
+//          self.output.fetchItems(self.request(text))
+//          self.activityIndicator.hidden = false
+//          self.activityIndicator.startAnimating()
+//        }
+//      }
+//  }
+//}
 
 //MARK: UICollectionViewDataSource
 

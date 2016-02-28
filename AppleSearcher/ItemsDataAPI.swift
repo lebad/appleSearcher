@@ -47,7 +47,11 @@ class ItemsDataAPI: SearchItemsStoreProtocol {
     //
   }
   
-  func createItem(itemToCreate: Item, completionHandler: (error: ItemsStoreError?) -> Void) {
+  func createItem(itemToCreate: Item, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void) {
+    //
+  }
+  
+  func createItems(itemsToCreate: [Item], completionHandler: (error: ItemsStoreError?) -> Void) {
     //
   }
   

@@ -31,10 +31,10 @@ class SearchItemsPresenter: SearchItemsPresenterInput
     var displayedItems: [SearchItems_FetchItems_ViewModel.DisplayedItem] = []
     
     for item in response.items {
-      let name = item.name!
-      let description = item.description!
-      let imagePath = item.imageURLString!
-      let trackID = item.trackID!
+      let name = item.name
+      let description = item.description
+      let imagePath = item.imageURLString
+      let trackID = item.trackID
       let displayedItem = SearchItems_FetchItems_ViewModel.DisplayedItem(name: name,
         description: description,
         imagePath: imagePath,

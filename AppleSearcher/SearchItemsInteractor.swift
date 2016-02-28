@@ -24,7 +24,7 @@ protocol SearchItemsInteractorOutput
 class SearchItemsInteractor: SearchItemsInteractorInput
 {
   var output: SearchItemsInteractorOutput!
-  var worker = SearchItemsWorker(itemsStore: ItemsDataStore())
+  var worker = SearchItemsWorker(itemsStore: ItemsDataAPI())
   
   // MARK: Business logic
   
