@@ -15,6 +15,8 @@ class ItemsDataStore: SearchItemsStoreProtocol {
   private let itemsDataAPI: SearchItemsStoreProtocol
   private let itemsDataStore: SearchItemsStoreProtocol
   
+  private var prevRequest = SearchItems_FetchItems_Request(searchString: "", offset: 0, itemsInRequest: 0)
+  
   init() {
     self.itemsDataAPI = ItemsDataAPI()
     self.itemsDataStore = ItemsCoreDataStore()

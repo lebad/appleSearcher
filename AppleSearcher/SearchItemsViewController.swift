@@ -35,6 +35,11 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   var didChangeText = false
   var loading = false
   
+  lazy var imageAnimationHandler: ImageAnimationHandler = {
+    [unowned self] in
+    return ImageAnimationHandler(view: self.view, seacrhView: self.searchBar)
+  }()
+  
   // MARK: Interface
   @IBOutlet weak var collectionView: UICollectionView! {
     didSet {
@@ -80,7 +85,8 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tapWithGesture:"))
+    let gestureRecognizer = UITapGestureRecognizer(target: self, action: "tapWithGesture:")
+    collectionView.addGestureRecognizer(gestureRecognizer)
   }
   
   // MARK: Display logic
@@ -111,6 +117,7 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
           self.bottomActivityIndicator.hidden = true
           
           self.collectionView.setContentOffset(self.collectionView.contentOffset, animated: false)
+          self.collectionView.scrollEnabled = true
 
       })
     }
@@ -144,11 +151,16 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
     }
   }
   
+  func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    searchBar.resignFirstResponder()
+  }
+  
   func loadSegment() {
     if loading == false {
       loading = true
       
       self.collectionView.setContentOffset(self.collectionView.contentOffset, animated: false)
+      self.collectionView.scrollEnabled = false
       
       self.output.fetchItems(self.request(searchBar.text!))
       self.bottomActivityIndicator.hidden = false
@@ -171,12 +183,14 @@ extension SearchItemsViewController: UICollectionViewDelegateFlowLayout {
     sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
     
       let displayedItem = displayedItems[indexPath.row]
+      let handler = getHandler(displayedItem, indexPath: indexPath)
+      handler.delegate = self
       
       let cell = NSBundle.mainBundle().loadNibNamed("ItemCollectionViewCell",
         owner: self,
         options: nil).first as! ItemCollectionViewCell
       cell.width = CGRectGetWidth(collectionView.bounds)
-      cell.updateCell(displayedItem)
+      handler.updateDataFor(cell)
       let cellSize = cell.calculateSize()
       return cellSize
   }
@@ -205,24 +219,6 @@ extension SearchItemsViewController: UISearchBarDelegate {
     searchBar.resignFirstResponder()
   }
 }
-
-//MARK: UICollectionViewDelegate
-
-//extension SearchItemsViewController: UICollectionViewDelegate {
-//  func collectionView(collectionView: UICollectionView,
-//    willDisplayCell cell: UICollectionViewCell,
-//    forItemAtIndexPath indexPath: NSIndexPath) {
-//      
-//      if indexPath.row == displayedItems.count - 1 {
-//        
-//        if let text = searchBar.text {
-//          self.output.fetchItems(self.request(text))
-//          self.activityIndicator.hidden = false
-//          self.activityIndicator.startAnimating()
-//        }
-//      }
-//  }
-//}
 
 //MARK: UICollectionViewDataSource
 
@@ -270,7 +266,13 @@ extension SearchItemsViewController: ItemCellHandlerDelegate {
   func setImage(image: UIImage, atTrackID id: Int) {
     itemImages[id] =  image
   }
+  
+  func animateImageView(imageView: UIImageView) {
+    searchBar.resignFirstResponder()
+    imageAnimationHandler.animateImageView(imageView)
+  }
 }
+
 
 
 

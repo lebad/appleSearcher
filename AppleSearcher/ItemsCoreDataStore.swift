@@ -30,7 +30,8 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
     
     let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
     let docURL = urls[urls.endIndex - 1]
-    let storeURL = docURL.URLByAppendingPathComponent("AppleSearcher.sqlite")
+    let storeURL = docURL.URLByAppendingPathComponent("Searcher.sqlite")
+    print(storeURL)
     do {
       try psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil)
     } catch {
@@ -58,7 +59,16 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
         fetchRequest.predicate = NSPredicate(format: "name CONTAINS[c] %@ OR desription CONTAINS[c] %@",
           request.searchString,
           request.searchString)
-        let results = try self.privateManagedObjectContext.executeFetchRequest(fetchRequest) as! [ManagedItem]        
+        fetchRequest.fetchBatchSize = request.itemsInRequest
+        fetchRequest.fetchLimit = request.itemsInRequest
+        fetchRequest.fetchOffset = request.offset
+        let nameSortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        let descriptionSortDescriptor = NSSortDescriptor(key: "desription", ascending: true)
+        fetchRequest.sortDescriptors = [nameSortDescriptor, descriptionSortDescriptor]
+        
+        try self.privateManagedObjectContext.save()
+        
+        let results = try self.privateManagedObjectContext.executeFetchRequest(fetchRequest) as! [ManagedItem]
         let items = results.map { $0.toItem() }
         completionHandler(items: items, error: nil)
       } catch {

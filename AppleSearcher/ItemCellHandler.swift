@@ -11,6 +11,7 @@ import UIKit
 protocol ItemCellHandlerDelegate: class {
   func getImageAt(trackID id: Int) -> UIImage?
   func setImage(image: UIImage, atTrackID id: Int)
+  func animateImageView(imageView: UIImageView)
 }
 
 class ItemCellHandler {
@@ -31,6 +32,7 @@ class ItemCellHandler {
   
   func updateDataFor(cell: ItemCollectionViewCell) {
     
+    cell.currentHandler = self
     cell.nameLabel.text = displayedItem.name
     cell.descriptionLabel.text = displayedItem.description
     cell.numberLabel.text = NSString.init(format: "%d", index + 1) as String
@@ -52,5 +54,9 @@ class ItemCellHandler {
         self.delegate?.setImage(image, atTrackID: self.displayedItem.trackID!)
       })
     })
+  }
+  
+  func animateImageView(imageView: UIImageView) {
+    self.delegate?.animateImageView(imageView)
   }
 }

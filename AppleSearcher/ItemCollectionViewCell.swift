@@ -13,9 +13,11 @@ class ItemCollectionViewCell: UICollectionViewCell {
   
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var numberLabel: UILabel!
-  
   @IBOutlet weak var nameLabel: UILabel!
   @IBOutlet weak var descriptionLabel: UILabel!
+  @IBOutlet weak var imageViewButton: UIButton!
+  
+  var currentHandler: ItemCellHandler?
   
   lazy var customConstraints: [NSLayoutConstraint] = {
     return [NSLayoutConstraint]()
@@ -55,15 +57,16 @@ class ItemCollectionViewCell: UICollectionViewCell {
     super.updateConstraints()
   }
   
-  func updateCell(displayedItem: SearchItems_FetchItems_ViewModel.DisplayedItem) {
-    nameLabel.text = displayedItem.name
-    descriptionLabel.text = displayedItem.description
-  }
-  
   func calculateSize() -> CGSize {
     setNeedsLayout()
     layoutIfNeeded()
     let cellSize = contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
     return cellSize
+  }
+  
+  @IBAction func imageViewButtonAction(sender: UIButton) {
+    if let handler = currentHandler {
+      handler.animateImageView(imageView)
+    }
   }
 }

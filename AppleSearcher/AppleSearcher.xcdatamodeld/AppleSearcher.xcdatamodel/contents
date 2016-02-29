@@ -5,8 +5,14 @@
         <attribute name="imageURLString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trackID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="search" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedSearch" inverseName="items" inverseEntity="ManagedSearch" syncable="YES"/>
+    </entity>
+    <entity name="ManagedSearch" syncable="YES">
+        <attribute name="searchString" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedItem" inverseName="search" inverseEntity="ManagedItem" syncable="YES"/>
     </entity>
     <elements>
-        <element name="ManagedItem" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="ManagedItem" positionX="-171" positionY="-18" width="128" height="118"/>
+        <element name="ManagedSearch" positionX="7" positionY="26" width="128" height="73"/>
     </elements>
 </model>
