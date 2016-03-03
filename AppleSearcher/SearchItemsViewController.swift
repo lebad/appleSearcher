@@ -47,8 +47,6 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
       flowLayout.minimumLineSpacing = 5.0
       let nib = UINib(nibName: "ItemCollectionViewCell", bundle: nil)
       collectionView.registerNib(nib, forCellWithReuseIdentifier: "ItemCollectionViewCell")
-      
-//      collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40.0, right: 0)
     }
   }
 
@@ -116,9 +114,7 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
           self.bottomActivityIndicator.stopAnimating()
           self.bottomActivityIndicator.hidden = true
           
-          self.collectionView.setContentOffset(self.collectionView.contentOffset, animated: false)
           self.collectionView.scrollEnabled = true
-
       })
     }
     mainActivityIndicator.stopAnimating()
@@ -145,7 +141,7 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
     let currentOffset = scrollView.contentOffset.y
     let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
     
-    if (maximumOffset - currentOffset) <= -30 {
+    if (currentOffset - maximumOffset) >= 40 {
       
       loadSegment()
     }
@@ -159,7 +155,7 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
     if loading == false {
       loading = true
       
-      self.collectionView.setContentOffset(self.collectionView.contentOffset, animated: false)
+      self.collectionView.setContentOffset(collectionView.contentOffset, animated: false)
       self.collectionView.scrollEnabled = false
       
       self.output.fetchItems(self.request(searchBar.text!))

@@ -17,6 +17,8 @@ class ItemsDataStore: SearchItemsStoreProtocol {
   
   private var prevRequest = SearchItems_FetchItems_Request(searchString: "", offset: 0, itemsInRequest: 0)
   
+  private var handlerWorked = false
+  
   init() {
     self.itemsDataAPI = ItemsDataAPI()
     self.itemsDataStore = ItemsCoreDataStore()
@@ -25,26 +27,30 @@ class ItemsDataStore: SearchItemsStoreProtocol {
   func fetchItems(request: SearchItems_FetchItems_Request,
     completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
       
-      itemsDataStore.fetchItems(request) { (items, error) -> Void in
-        if items.count == 0 {
-          self.itemsDataAPI.fetchItems(request) { (items, error) -> Void in
-            if items.count != 0 {
-              self.createItems(items, completionHandler: { (error) -> Void in
-                if error == nil {
-                  self.itemsDataStore.fetchItems(request, completionHandler: { (items, error) -> Void in
-                    completionHandler(items: items, error: error)
-                  })
-//                  self.fetchItems(request, completionHandler: { (items, error) -> Void in
-//                    completionHandler(items: items, error: nil)
-//                  })
-                }
-              })
-            }
+      itemsDataStore.fetchItems(request, completionHandler: completionHandler)
+      
+      itemsDataAPI.fetchItems(request) { (items, error) -> Void in
+        self.createItems(items, completionHandler: { (error) -> Void in
+          if error == nil {
+            self.itemsDataStore.fetchItems(request, completionHandler: completionHandler)
           }
-        } else {
-          completionHandler(items: items, error: nil)
-        }
+        })
       }
+      
+//      itemsDataStore.fetchItems(request) { (items, error) -> Void in
+//        if items.count != 0 {
+//          self.handlerWorked = true
+//          completionHandler(items: items, error: error)
+//        }
+//      }
+//      itemsDataAPI.fetchItems(request) { (items, error) -> Void in
+//        self.createItems(items, completionHandler: { (error) -> Void in
+//          if self.handlerWorked == false {
+//            self.handlerWorked = false
+//            self.itemsDataStore.fetchItems(request, completionHandler: completionHandler)
+//          }
+//        })
+//      }
   }
   
   func fetchItem(trackID: NSNumber?, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void) {
