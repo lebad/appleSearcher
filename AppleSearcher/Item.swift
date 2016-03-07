@@ -8,11 +8,15 @@
 
 import Foundation
 
-struct Item: Equatable {
+struct Item: Hashable {
   var name: String?
   var description: String?
   var imageURLString: String?
   var trackID: Int?
+  
+  var hashValue: Int {
+    return trackID!
+  }
   
   init(name: String?, description: String?, imageURLString: String?, trackID: Int?) {
     self.name = name

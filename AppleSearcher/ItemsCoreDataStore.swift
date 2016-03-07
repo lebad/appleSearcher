@@ -33,7 +33,8 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
     let storeURL = docURL.URLByAppendingPathComponent("Searcher.sqlite")
     print(storeURL)
     do {
-      try psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil)
+      let options = [NSSQLitePragmasOption: ["journal_mode": "DELETE"]]
+      try psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options)
     } catch {
       fatalError("Error migrating store: \(error)")
     }
@@ -65,8 +66,6 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
         let nameSortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         let descriptionSortDescriptor = NSSortDescriptor(key: "desription", ascending: true)
         fetchRequest.sortDescriptors = [nameSortDescriptor, descriptionSortDescriptor]
-        
-        try self.privateManagedObjectContext.save()
         
         let results = try self.privateManagedObjectContext.executeFetchRequest(fetchRequest) as! [ManagedItem]
         let items = results.map { $0.toItem() }
@@ -108,7 +107,11 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
         managedItem.desription = itemToCreate.description
         managedItem.imageURLString = itemToCreate.imageURLString
         managedItem.trackID = itemToCreate.trackID
+        
         try self.privateManagedObjectContext.save()
+        
+        try self.mainManagedObjectContext.save()
+        
         completionHandler(item: managedItem.toItem(), error: nil)
       } catch {
         completionHandler(item: nil,
@@ -128,6 +131,9 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
         managedItem.trackID = item.trackID
       }
       try self.privateManagedObjectContext.save()
+      
+      try self.mainManagedObjectContext.save()
+      
       completionHandler(error: nil)
     } catch {
       completionHandler(error: ItemsStoreError.CannotCreate("Cannot create items"))

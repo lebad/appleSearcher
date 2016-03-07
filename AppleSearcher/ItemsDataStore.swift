@@ -11,13 +11,10 @@ import Foundation
 class ItemsDataStore: SearchItemsStoreProtocol {
   
   private var items = [Item]()
+  private var currentRequest = SearchItems_FetchItems_Request(searchString: "", offset: 0, itemsInRequest: 0)
   
   private let itemsDataAPI: SearchItemsStoreProtocol
   private let itemsDataStore: SearchItemsStoreProtocol
-  
-  private var prevRequest = SearchItems_FetchItems_Request(searchString: "", offset: 0, itemsInRequest: 0)
-  
-  private var handlerWorked = false
   
   init() {
     self.itemsDataAPI = ItemsDataAPI()
@@ -26,6 +23,13 @@ class ItemsDataStore: SearchItemsStoreProtocol {
   
   func fetchItems(request: SearchItems_FetchItems_Request,
     completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
+      
+      self.currentRequest = request
+      
+      itemsDataStore.fetchItems(request) { (items, error) -> Void in
+        
+        completionHandler(items: items, error: error)
+      }
       
       itemsDataStore.fetchItems(request, completionHandler: completionHandler)
       
@@ -36,21 +40,10 @@ class ItemsDataStore: SearchItemsStoreProtocol {
           }
         })
       }
-      
-//      itemsDataStore.fetchItems(request) { (items, error) -> Void in
-//        if items.count != 0 {
-//          self.handlerWorked = true
-//          completionHandler(items: items, error: error)
-//        }
-//      }
-//      itemsDataAPI.fetchItems(request) { (items, error) -> Void in
-//        self.createItems(items, completionHandler: { (error) -> Void in
-//          if self.handlerWorked == false {
-//            self.handlerWorked = false
-//            self.itemsDataStore.fetchItems(request, completionHandler: completionHandler)
-//          }
-//        })
-//      }
+  }
+  
+  private func mergeItems(items: [Item]) {
+    
   }
   
   func fetchItem(trackID: NSNumber?, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void) {
