@@ -120,8 +120,11 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
     }
   }
   
-  func createItems(itemsToCreate: [Item], completionHandler: (error: ItemsStoreError?) -> Void) {
+  func createItems(itemsToCreate: [Item], completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
     do {
+      
+      var items = [Item]()
+      
       for item in itemsToCreate {
         let managedItem = NSEntityDescription.insertNewObjectForEntityForName("ManagedItem",
           inManagedObjectContext: self.privateManagedObjectContext) as! ManagedItem
@@ -129,14 +132,19 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
         managedItem.desription = item.description
         managedItem.imageURLString = item.imageURLString
         managedItem.trackID = item.trackID
+        
+        items.append(managedItem.toItem())
       }
       try self.privateManagedObjectContext.save()
-      
       try self.mainManagedObjectContext.save()
       
-      completionHandler(error: nil)
+      if items.count != 0 {
+        completionHandler(items: items, error: nil)
+      } else {
+        completionHandler(items: [], error: ItemsStoreError.CannotCreate("Cannot create items"))
+      }
     } catch {
-      completionHandler(error: ItemsStoreError.CannotCreate("Cannot create items"))
+      completionHandler(items: [], error: ItemsStoreError.CannotCreate("Cannot create items"))
     }
   }
 }

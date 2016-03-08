@@ -9,10 +9,7 @@
 import Foundation
 
 class ItemsDataStore: SearchItemsStoreProtocol {
-  
-  private var items = [Item]()
-  private var currentRequest = SearchItems_FetchItems_Request(searchString: "", offset: 0, itemsInRequest: 0)
-  
+    
   private let itemsDataAPI: SearchItemsStoreProtocol
   private let itemsDataStore: SearchItemsStoreProtocol
   
@@ -24,26 +21,15 @@ class ItemsDataStore: SearchItemsStoreProtocol {
   func fetchItems(request: SearchItems_FetchItems_Request,
     completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
       
-      self.currentRequest = request
-      
-      itemsDataStore.fetchItems(request) { (items, error) -> Void in
-        
-        completionHandler(items: items, error: error)
-      }
-      
       itemsDataStore.fetchItems(request, completionHandler: completionHandler)
       
       itemsDataAPI.fetchItems(request) { (items, error) -> Void in
-        self.createItems(items, completionHandler: { (error) -> Void in
+        self.createItems(items, completionHandler: { (items, error) -> Void in
           if error == nil {
-            self.itemsDataStore.fetchItems(request, completionHandler: completionHandler)
+            completionHandler(items: items, error: error)
           }
         })
       }
-  }
-  
-  private func mergeItems(items: [Item]) {
-    
   }
   
   func fetchItem(trackID: NSNumber?, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void) {
@@ -54,7 +40,7 @@ class ItemsDataStore: SearchItemsStoreProtocol {
     itemsDataStore.createItem(itemToCreate, completionHandler: completionHandler)
   }
   
-  func createItems(itemsToCreate: [Item], completionHandler: (error: ItemsStoreError?) -> Void) {
+  func createItems(itemsToCreate: [Item], completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
     itemsDataStore.createItems(itemsToCreate, completionHandler: completionHandler)
   }
 }

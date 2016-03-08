@@ -47,6 +47,10 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
       flowLayout.minimumLineSpacing = 5.0
       let nib = UINib(nibName: "ItemCollectionViewCell", bundle: nil)
       collectionView.registerNib(nib, forCellWithReuseIdentifier: "ItemCollectionViewCell")
+      
+      let footerNib = UINib(nibName: "ItemFooterCollectionReusableView", bundle: nil)
+      collectionView.registerNib(footerNib,
+        forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "ItemFooterCollectionReusableView")
     }
   }
 
@@ -248,6 +252,15 @@ extension SearchItemsViewController: UICollectionViewDataSource {
       cellHandlers[indexPath] = ItemCellHandler(displayedItem: displayedItem, index: indexPath.row)
     }
     return cellHandlers[indexPath]!
+  }
+  
+  func collectionView(collectionView: UICollectionView,
+    viewForSupplementaryElementOfKind kind: String,
+    atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    
+    let footer = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter,
+      withReuseIdentifier: "ItemFooterCollectionReusableView", forIndexPath: indexPath)
+    return footer
   }
 }
 
