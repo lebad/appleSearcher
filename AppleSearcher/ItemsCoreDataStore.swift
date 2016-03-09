@@ -25,7 +25,7 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
     }
     
     let psc = NSPersistentStoreCoordinator(managedObjectModel: mom)
-    mainManagedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+    mainManagedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
     mainManagedObjectContext.persistentStoreCoordinator = psc
     
     let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
@@ -34,7 +34,7 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
     print(storeURL)
     do {
       let options = [NSSQLitePragmasOption: ["journal_mode": "DELETE"]]
-      try psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options)
+      try psc.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: storeURL, options: options)
     } catch {
       fatalError("Error migrating store: \(error)")
     }
@@ -60,7 +60,6 @@ class ItemsCoreDataStore: SearchItemsStoreProtocol {
         fetchRequest.predicate = NSPredicate(format: "name CONTAINS[c] %@ OR desription CONTAINS[c] %@",
           request.searchString,
           request.searchString)
-        fetchRequest.fetchBatchSize = request.itemsInRequest
         fetchRequest.fetchLimit = request.itemsInRequest
         fetchRequest.fetchOffset = request.offset
         let nameSortDescriptor = NSSortDescriptor(key: "name", ascending: true)

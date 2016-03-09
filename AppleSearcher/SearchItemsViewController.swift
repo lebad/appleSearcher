@@ -29,6 +29,9 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   var displayedItems: [SearchItems_FetchItems_ViewModel.DisplayedItem] = []
   var cellHandlers: [NSIndexPath: ItemCellHandler] = [:]
   var itemImages: [Int: UIImage] = [:]
+  lazy var footerHandler: ItemFooterHandler = {
+    return ItemFooterHandler()
+  }()
   
   let itemsInRequest = 20
   
@@ -67,13 +70,6 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
     }
   }
   
-  @IBOutlet weak var bottomActivityIndicator: UIActivityIndicatorView! {
-    didSet {
-      bottomActivityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
-      bottomActivityIndicator.hidden = true
-    }
-  }
-  
   // MARK: Object lifecycle
   
   override func awakeFromNib()
@@ -95,6 +91,10 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   
   func displayFetchedItems(viewModel: SearchItems_FetchItems_ViewModel) {
     
+    if viewModel.displayedItems.count == 0 {
+      return
+    }
+    
     if didChangeText == true {
       
       collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
@@ -115,10 +115,8 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
         completion: { (finished) -> Void in
           UIView.setAnimationsEnabled(true)
           self.loading = false
-          self.bottomActivityIndicator.stopAnimating()
-          self.bottomActivityIndicator.hidden = true
           
-          self.collectionView.scrollEnabled = true
+          self.footerHandler.stopIndicate()
       })
     }
     mainActivityIndicator.stopAnimating()
@@ -145,7 +143,9 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
     let currentOffset = scrollView.contentOffset.y
     let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
     
-    if (currentOffset - maximumOffset) >= 40 {
+    if (currentOffset - maximumOffset) >= 0 {
+      
+      self.collectionView.setContentOffset(CGPoint(x: 0.0, y: maximumOffset), animated: false)
       
       loadSegment()
     }
@@ -159,12 +159,9 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
     if loading == false {
       loading = true
       
-      self.collectionView.setContentOffset(collectionView.contentOffset, animated: false)
-      self.collectionView.scrollEnabled = false
-      
       self.output.fetchItems(self.request(searchBar.text!))
-      self.bottomActivityIndicator.hidden = false
-      self.bottomActivityIndicator.startAnimating()
+      
+      self.footerHandler.startIndicate()
     }
   }
   
@@ -193,6 +190,17 @@ extension SearchItemsViewController: UICollectionViewDelegateFlowLayout {
       handler.updateDataFor(cell)
       let cellSize = cell.calculateSize()
       return cellSize
+  }
+  
+  func collectionView(collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    referenceSizeForFooterInSection section: Int) -> CGSize {
+    
+      var footerHeight: CGFloat = 50.0
+      if displayedItems.count == 0 {
+        footerHeight = 0.0
+      }
+      return CGSize(width: CGRectGetWidth(collectionView.bounds), height: footerHeight)
   }
 }
 
@@ -257,9 +265,12 @@ extension SearchItemsViewController: UICollectionViewDataSource {
   func collectionView(collectionView: UICollectionView,
     viewForSupplementaryElementOfKind kind: String,
     atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-    
+
     let footer = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter,
       withReuseIdentifier: "ItemFooterCollectionReusableView", forIndexPath: indexPath)
+      
+    footerHandler.footerView = footer as? ItemFooterCollectionReusableView
+      
     return footer
   }
 }
