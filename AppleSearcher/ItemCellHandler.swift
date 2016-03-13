@@ -38,12 +38,17 @@ class ItemCellHandler {
     cell.numberLabel.text = NSString.init(format: "%d", index + 1) as String
     cell.imageView.image = nil
     
-    if let image = self.delegate?.getImageAt(trackID: displayedItem.trackID!) {
-      if cell.imageView.image != image {
-        cell.imageView.image = image
+    if let trackID = displayedItem.trackID {
+      if let image = self.delegate?.getImageAt(trackID: trackID) {
+        if cell.imageView.image != image {
+          cell.imageView.image = image
+        }
+      } else {
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+          self.downloadOrGetImageForCell(cell)
+        })
       }
-    } else {
-      downloadOrGetImageForCell(cell)
     }
   }
   

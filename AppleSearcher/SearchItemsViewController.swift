@@ -91,9 +91,9 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   
   func displayFetchedItems(viewModel: SearchItems_FetchItems_ViewModel) {
     
-    if viewModel.displayedItems.count == 0 {
-      return
-    }
+//    if viewModel.displayedItems.count == 0 {
+//      return
+//    }
     
     if didChangeText == true {
       
@@ -135,7 +135,8 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   func request(searchString: String) -> SearchItems_FetchItems_Request {
     return SearchItems_FetchItems_Request(searchString: searchString,
       offset: displayedItems.count,
-      itemsInRequest: self.itemsInRequest)
+      itemsInRequest: self.itemsInRequest,
+      language: (searchBar.textInputMode?.primaryLanguage)!)
   }
   
   // SCROLL
@@ -179,17 +180,19 @@ extension SearchItemsViewController: UICollectionViewDelegateFlowLayout {
     layout collectionViewLayout: UICollectionViewLayout,
     sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
     
-      let displayedItem = displayedItems[indexPath.row]
-      let handler = getHandler(displayedItem, indexPath: indexPath)
-      handler.delegate = self
+//      let displayedItem = displayedItems[indexPath.row]
+//      let handler = getHandler(displayedItem, indexPath: indexPath)
+//      handler.delegate = self
+//      
+//      let cell = NSBundle.mainBundle().loadNibNamed("ItemCollectionViewCell",
+//        owner: self,
+//        options: nil).first as! ItemCollectionViewCell
+//      cell.width = CGRectGetWidth(collectionView.bounds)
+//      handler.updateDataFor(cell)
+//      let cellSize = cell.calculateSize()
       
-      let cell = NSBundle.mainBundle().loadNibNamed("ItemCollectionViewCell",
-        owner: self,
-        options: nil).first as! ItemCollectionViewCell
-      cell.width = CGRectGetWidth(collectionView.bounds)
-      handler.updateDataFor(cell)
-      let cellSize = cell.calculateSize()
-      return cellSize
+      
+      return CGSize(width: CGRectGetWidth(collectionView.bounds), height: 100.0)
   }
   
   func collectionView(collectionView: UICollectionView,
@@ -209,9 +212,9 @@ extension SearchItemsViewController: UICollectionViewDelegateFlowLayout {
 extension SearchItemsViewController: UISearchBarDelegate {
   
   func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-    if loading == false {
-      loading = true
-      
+//    if loading == false {
+//      loading = true
+    
       didChangeText = true
       
       self.itemImages.removeAll()
@@ -219,7 +222,7 @@ extension SearchItemsViewController: UISearchBarDelegate {
       
       self.mainActivityIndicator.hidden = false
       self.mainActivityIndicator.startAnimating()
-    }
+//    }
     
   }
   

@@ -10,31 +10,61 @@ import Foundation
 
 class ItemsDataAPI: SearchItemsStoreProtocol {
   
-  let baseURLString = "https://itunes.apple.com/search?term="
+  let baseURLString = "https://itunes.apple.com/search?"
   
   lazy var session: NSURLSession = {
     let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
     return NSURLSession.init(configuration: sessionConfiguration)
   }()
   
+  var isDownloaded: Bool = false
+  
+  var dataTask: NSURLSessionDataTask?
+  
   func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
+    
+//    if isDownloaded == true {
+//      return
+//    }
+    
+    isDownloaded = true
+    
+      dataTask?.cancel()
+    
       let URL = formatURLForRequest(request)
     
-      let dataTask = session.dataTaskWithURL(URL) { (data, response, error) -> Void in
+      dataTask = session.dataTaskWithURL(URL) { (data, response, error) -> Void in
         do {
           let items = try self.getItems(data)
-          completionHandler(items: items, error: nil)
+          
+          if error == nil {
+            completionHandler(items: items, error: nil)
+            self.isDownloaded = false
+          } else {
+            completionHandler(items: [], error: ItemsStoreError.CannotFetch("Cannot fetch items from api"))
+          }
         } catch {
           completionHandler(items: [], error: ItemsStoreError.CannotFetch("Cannot fetch items from api"))
         }
       }
-      dataTask.resume()
+      dataTask?.resume()
   }
   
   func formatURLForRequest(request: SearchItems_FetchItems_Request) -> NSURL {
-    let offsetString = NSString.init(format: "&offset=%d", request.offset) as String
-    let itemsInRequestString = NSString.init(format: "&limit=%d", request.itemsInRequest) as String
-    let URLString = baseURLString + formatString(request.searchString) + itemsInRequestString + offsetString
+    
+    let language = NSString(format: "&lang=%@", request.language) as String
+    
+    let lang = String(language.lowercaseString.characters.map {
+      $0 == "-" ? "_" : $0
+    })
+    
+    let country = NSString(format: "&country=%@", lang.componentsSeparatedByString("_").last!) as String
+    
+    let term = "term="
+    
+    let offsetString = NSString(format: "&offset=%d", request.offset) as String
+    let itemsInRequestString = NSString(format: "&limit=%d", request.itemsInRequest) as String
+    let URLString = baseURLString + term + formatString(request.searchString) + country + itemsInRequestString + offsetString
     
     if let url = NSURL(string: URLString) {
       return url
@@ -74,7 +104,7 @@ class ItemsDataAPI: SearchItemsStoreProtocol {
     
     if let responseData = responseData {
       let json = try NSJSONSerialization.JSONObjectWithData(responseData, options: []) as! [String: AnyObject]
-//      print(json)
+      print(json)
       
       if let results = json["results"] as? [[String: AnyObject]] {
         for result in results {

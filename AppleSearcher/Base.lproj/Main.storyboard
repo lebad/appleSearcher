@@ -56,9 +56,6 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="sLF-1d-Yvj">
                                 <rect key="frame" x="177" y="324" width="20" height="20"/>
                             </activityIndicatorView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="g4y-E1-M7r">
-                                <rect key="frame" x="177" y="637" width="20" height="20"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -66,9 +63,7 @@
                             <constraint firstItem="sLF-1d-Yvj" firstAttribute="centerY" secondItem="DSY-NS-lRq" secondAttribute="centerY" id="1lj-72-cfC"/>
                             <constraint firstItem="k9C-3m-gsD" firstAttribute="top" secondItem="AsR-cY-qGq" secondAttribute="bottom" id="7sE-i8-aqO"/>
                             <constraint firstItem="EYs-cd-JGj" firstAttribute="left" secondItem="DSY-NS-lRq" secondAttribute="left" id="8bE-Lm-S5y"/>
-                            <constraint firstItem="nMC-SW-MCi" firstAttribute="top" secondItem="g4y-E1-M7r" secondAttribute="bottom" constant="10" id="MbK-9J-yPF"/>
                             <constraint firstItem="k9C-3m-gsD" firstAttribute="left" secondItem="DSY-NS-lRq" secondAttribute="left" id="PKY-8D-1jA"/>
-                            <constraint firstItem="g4y-E1-M7r" firstAttribute="centerX" secondItem="DSY-NS-lRq" secondAttribute="centerX" id="S6N-gn-2up"/>
                             <constraint firstItem="EYs-cd-JGj" firstAttribute="top" secondItem="k9C-3m-gsD" secondAttribute="bottom" id="cPe-7x-H8V"/>
                             <constraint firstAttribute="right" secondItem="k9C-3m-gsD" secondAttribute="right" id="jae-as-ZSb"/>
                             <constraint firstItem="sLF-1d-Yvj" firstAttribute="centerX" secondItem="DSY-NS-lRq" secondAttribute="centerX" id="sXh-AJ-qoe"/>
@@ -78,7 +73,6 @@
                     <navigationItem key="navigationItem" title="Music Finder" id="hu8-Va-p1p"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <outlet property="bottomActivityIndicator" destination="g4y-E1-M7r" id="1y8-bl-Ddj"/>
                         <outlet property="collectionView" destination="EYs-cd-JGj" id="YI9-6G-vUv"/>
                         <outlet property="mainActivityIndicator" destination="sLF-1d-Yvj" id="Dbb-mY-B4l"/>
                         <outlet property="searchBar" destination="k9C-3m-gsD" id="xeb-pr-N6L"/>
