@@ -97,7 +97,11 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
       displayedItems = viewModel.displayedItems
       didChangeText = false
       collectionView.reloadData()
-      loading = false
+      
+      if viewModel.displayedItems.count != 0 {
+        loading = false
+      }
+      
     } else {
       displayedItems += viewModel.displayedItems
       
@@ -110,7 +114,10 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
         },
         completion: { (finished) -> Void in
           UIView.setAnimationsEnabled(true)
-          self.loading = false
+          
+          if viewModel.displayedItems.count != 0 {
+            self.loading = false
+          }
           
           self.footerHandler.stopIndicate()
       })
