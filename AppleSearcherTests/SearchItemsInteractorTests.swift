@@ -9,7 +9,7 @@
 //  clean architecture to your iOS and Mac projects, see http://clean-swift.com
 //
 
-@testable import AppleSearcher
+//@testable import AppleSearcher
 import XCTest
 
 class SearchItemsInteractorTests: XCTestCase
@@ -53,13 +53,14 @@ class SearchItemsInteractorTests: XCTestCase
     // MARK: Method call expectations
     var fetchItemsCalled = false
     
-    var searchText: String!
+    var request: SearchItems_FetchItems_Request!
     
     // MARK: Spied methods
-    override func fetchItems(searchString: String, completionHandler: (items: [Item]) -> Void) {
+    override func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
       fetchItemsCalled = true
-      searchText = searchString
-      completionHandler(items: [])
+      
+      self.request = request
+      completionHandler(items: [], error: nil)
     }
   }
   
@@ -69,11 +70,12 @@ class SearchItemsInteractorTests: XCTestCase
   {
     // Given
     let searchItemsInteractorOutputSpy = SearchItemsInteractorOutputSpy()
+    
     sut.output = searchItemsInteractorOutputSpy
     let searchItemsWorkerSpy = SearchItemsWorkerSpy(itemsStore: ItemsDataStore())
     sut.worker = searchItemsWorkerSpy
     
-    let request = SearchItems_FetchItems_Request(searchString: "AAA")
+    let request = SearchItems_FetchItems_Request(searchString:"Red", offset: 20, itemsInRequest: 20, language: "us_en")
     
     // When
     sut.fetchItems(request)
@@ -90,12 +92,12 @@ class SearchItemsInteractorTests: XCTestCase
     let searchItemsWorkerSpy = SearchItemsWorkerSpy(itemsStore: ItemsDataStore())
     sut.worker = searchItemsWorkerSpy
     
-    let request = SearchItems_FetchItems_Request(searchString: "AAA")
+    let request = SearchItems_FetchItems_Request(searchString:"Red", offset: 20, itemsInRequest: 20, language: "us_en")
     
     // When
     sut.fetchItems(request)
     
     // Then
-    XCTAssertEqual("AAA", searchItemsWorkerSpy.searchText, "Should carry search string to worker")
+    XCTAssert(request == searchItemsWorkerSpy.request, "Should carry search string to worker")
   }
 }

@@ -107,10 +107,11 @@ class SearchItemsViewControllerTests: XCTestCase
     let collectionViewSpy = CollectionViewSpy.init(frame: sut.view.bounds, collectionViewLayout: UICollectionViewFlowLayout())
     sut.collectionView = collectionViewSpy
     
-    let displayedItems = [SearchItems_FetchItems_ViewModel.DisplayedItem(name: "RED", description: "HOT", imagePath: "image.jpg")]
+    let displayedItems = [SearchItems_FetchItems_ViewModel.DisplayedItem(name: "RED", description: "HOT", imagePath: "image.jpg", trackID: 2)]
     let viewModel = SearchItems_FetchItems_ViewModel(displayedItems: displayedItems)
     
     // When
+    sut.didChangeText = true
     sut.displayFetchedItems(viewModel)
     
     // Then
@@ -131,7 +132,7 @@ class SearchItemsViewControllerTests: XCTestCase
   func testNumberOfRowsInAnySectionShouldEqaulNumberOfItemsToDisplay() {
     // Given
     let collectionView = sut.collectionView
-    let displayedItems = [SearchItems_FetchItems_ViewModel.DisplayedItem(name: "RED", description: "HOT", imagePath: "image.jpg")]
+    let displayedItems = [SearchItems_FetchItems_ViewModel.DisplayedItem(name: "RED", description: "HOT", imagePath: "image.jpg", trackID: 2)]
     sut.displayedItems = displayedItems
     
     // When

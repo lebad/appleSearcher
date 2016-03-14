@@ -24,19 +24,15 @@ protocol SearchItemsInteractorOutput
 class SearchItemsInteractor: SearchItemsInteractorInput
 {
   var output: SearchItemsInteractorOutput!
-  var worker = SearchItemsWorker(itemsStore: ItemsDataAPI())
+  var worker = SearchItemsWorker(itemsStore: ItemsDataStore())
   
   // MARK: Business logic
   
   func fetchItems(request: SearchItems_FetchItems_Request) {
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
-      self.worker.fetchItems(request) { (items, error) -> Void in
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-          let response = SearchItems_FetchItems_Response(items: items)
-          self.output.presentFetchedItems(response)
-        })
-      }
+    self.worker.fetchItems(request) { (items, error) -> Void in
+      let response = SearchItems_FetchItems_Response(items: items)
+      self.output.presentFetchedItems(response)
     }
   }
 }

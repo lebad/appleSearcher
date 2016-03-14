@@ -40,15 +40,15 @@ class SearchItemsWorkerTests: XCTestCase
   
   // MARK: Test doubles
   
-  class ItemsDataStoreSpy: ItemsDataAPI { //временно
+  class ItemsDataStoreSpy: ItemsDataAPI { //temporary
     
     var fetchItemsCalled = false
     
-    override func fetchItems(searchString: String, completionHandler: (items: () throws -> [Item]) -> Void) {
+    override func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
       fetchItemsCalled = true
       let oneSecond = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 1 * Int64(NSEC_PER_SEC))
       dispatch_after(oneSecond, dispatch_get_main_queue()) { () -> Void in
-        completionHandler{ return [Item(), Item()] }
+        completionHandler(items: [], error: nil)
       }
     }
   }
@@ -58,11 +58,11 @@ class SearchItemsWorkerTests: XCTestCase
   func testFetchItemsShouldReturnListOfItems() {
     // Given
     let itemDataStoreSpy = sut.itemsStore as! ItemsDataStoreSpy
-    let searchString = "Red hot chili peppers"
+    let request = SearchItems_FetchItems_Request(searchString:"Red", offset: 20, itemsInRequest: 20, language: "us_en")
     
     // When
     let expectation = expectationWithDescription("Wait for the fecth items result")
-    sut.fetchItems(searchString) { (items) -> Void in
+    sut.fetchItems(request) { (items, error) -> Void in
       expectation.fulfill()
     }
     

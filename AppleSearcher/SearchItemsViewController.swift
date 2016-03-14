@@ -91,10 +91,6 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
   
   func displayFetchedItems(viewModel: SearchItems_FetchItems_ViewModel) {
     
-//    if viewModel.displayedItems.count == 0 {
-//      return
-//    }
-    
     if didChangeText == true {
       
       collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
@@ -180,18 +176,6 @@ extension SearchItemsViewController: UICollectionViewDelegateFlowLayout {
     layout collectionViewLayout: UICollectionViewLayout,
     sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
     
-//      let displayedItem = displayedItems[indexPath.row]
-//      let handler = getHandler(displayedItem, indexPath: indexPath)
-//      handler.delegate = self
-//      
-//      let cell = NSBundle.mainBundle().loadNibNamed("ItemCollectionViewCell",
-//        owner: self,
-//        options: nil).first as! ItemCollectionViewCell
-//      cell.width = CGRectGetWidth(collectionView.bounds)
-//      handler.updateDataFor(cell)
-//      let cellSize = cell.calculateSize()
-      
-      
       return CGSize(width: CGRectGetWidth(collectionView.bounds), height: 100.0)
   }
   
@@ -212,17 +196,14 @@ extension SearchItemsViewController: UICollectionViewDelegateFlowLayout {
 extension SearchItemsViewController: UISearchBarDelegate {
   
   func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-//    if loading == false {
-//      loading = true
     
-      didChangeText = true
-      
-      self.itemImages.removeAll()
-      self.output.fetchItems(self.request(searchText))
-      
-      self.mainActivityIndicator.hidden = false
-      self.mainActivityIndicator.startAnimating()
-//    }
+    didChangeText = true
+    
+    self.itemImages.removeAll()
+    self.output.fetchItems(self.request(searchText))
+    
+    self.mainActivityIndicator.hidden = false
+    self.mainActivityIndicator.startAnimating()
     
   }
   

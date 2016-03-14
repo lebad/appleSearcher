@@ -17,17 +17,9 @@ class ItemsDataAPI: SearchItemsStoreProtocol {
     return NSURLSession.init(configuration: sessionConfiguration)
   }()
   
-  var isDownloaded: Bool = false
-  
   var dataTask: NSURLSessionDataTask?
   
   func fetchItems(request: SearchItems_FetchItems_Request, completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
-    
-//    if isDownloaded == true {
-//      return
-//    }
-    
-    isDownloaded = true
     
       dataTask?.cancel()
     
@@ -39,7 +31,6 @@ class ItemsDataAPI: SearchItemsStoreProtocol {
           
           if error == nil {
             completionHandler(items: items, error: nil)
-            self.isDownloaded = false
           } else {
             completionHandler(items: [], error: ItemsStoreError.CannotFetch("Cannot fetch items from api"))
           }

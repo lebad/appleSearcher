@@ -22,11 +22,18 @@ class SearchItemsWorker
   
   func fetchItems(request: SearchItems_FetchItems_Request,
     completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
-      itemsStore.fetchItems(request) { (items, error) -> Void in
-        if error == nil {
-          completionHandler(items: items, error: nil)
+      
+      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
+        self.itemsStore.fetchItems(request) { (items, error) -> Void in
+          
+          if error == nil {
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+              completionHandler(items: items, error: nil)
+            })
+          }
         }
-    }
+      }
+      
   }
 }
 

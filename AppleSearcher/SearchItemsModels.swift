@@ -39,5 +39,12 @@ func !=(lhs: SearchItems_FetchItems_ViewModel.DisplayedItem, rhs: SearchItems_Fe
   return lhs.trackID != rhs.trackID
 }
 
+func == (lhs: SearchItems_FetchItems_Request, rhs: SearchItems_FetchItems_Request) -> Bool {
+  return lhs.searchString == rhs.searchString
+  && lhs.offset == rhs.offset
+  && lhs.itemsInRequest == rhs.itemsInRequest
+  && lhs.language == rhs.language
+}
+
 
 
