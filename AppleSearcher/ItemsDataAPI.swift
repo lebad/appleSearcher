@@ -65,15 +65,18 @@ class ItemsDataAPI: SearchItemsStoreProtocol {
   }
   
   func fetchItem(trackID: NSNumber?, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void) {
-    //
+    completionHandler(item: Item(name: "", description: "", imageURLString: "", trackID: 0),
+      error: ItemsStoreError.CannotFetch("Can not fetch from API"))
   }
   
   func createItem(itemToCreate: Item, completionHandler: (item: Item?, error: ItemsStoreError?) -> Void) {
-    //
+    completionHandler(item: Item(name: "", description: "", imageURLString: "", trackID: 0),
+      error: ItemsStoreError.CannotCreate("Can not create to API"))
   }
   
   func createItems(itemsToCreate: [Item], completionHandler: (items: [Item], error: ItemsStoreError?) -> Void) {
-    //
+    completionHandler(items: [Item(name: "", description: "", imageURLString: "", trackID: 0)],
+      error: ItemsStoreError.CannotCreate("Can not create to API"))
   }
   
   func formatString(string: String) -> String {
