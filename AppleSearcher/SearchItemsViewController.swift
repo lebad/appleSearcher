@@ -119,11 +119,16 @@ class SearchItemsViewController: UIViewController, SearchItemsViewControllerInpu
             self.loading = false
           }
           
-          self.footerHandler.stopIndicate()
+          if viewModel.displayedItems.count != 0 {
+            self.footerHandler.stopIndicate()
+          }
       })
     }
-    mainActivityIndicator.stopAnimating()
-    mainActivityIndicator.hidden = true
+    
+    if viewModel.displayedItems.count != 0 {
+      mainActivityIndicator.stopAnimating()
+      mainActivityIndicator.hidden = true
+    }
   }
   
   func getIndexPathsFor(viewModel: SearchItems_FetchItems_ViewModel) -> [NSIndexPath] {
